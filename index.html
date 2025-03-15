@@ -85,7 +85,7 @@
               const row = document.createElement('div');
               row.className = "flex space-x-2 items-center p-3 pt-0 pb-0";
               row.innerHTML = `
-                  <select class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-black mt-1">
+                  <select class="w-full p-3 border rounded-lg focus:outline-none focus:ring-1 focus:ring-black mt-1">
                       <optgroup label="MINOR">
                           <option value="fail-or-refuse-to-surrender-licence">Fail or refuse to surrender licence</option>
                           <option value="fail-to-produce-evidence-of-insurance">Fail to produce evidence of insurance</option>
@@ -110,7 +110,7 @@
                           <option value="manslaughter-operation-vehicle">Manslaughter committed in the operation or use of a motor vehicle</option>
                       </optgroup>
                   </select>
-                  <input type="number" class="p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-black w-1/5 text-right" min="0">
+                  <input type="number" class="p-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-black w-1/5 text-right" min="0">
               `;
               container.appendChild(row);
           }
@@ -169,7 +169,7 @@
                             <span class="material-icons text-gray-600 text-2xl">badge</span>
                             <span class="pt-1 pl-2">License Type</span>
                         </label>
-                        <select class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-black mt-1">
+                        <select class="w-full p-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-black mt-1">
                             <option value="g">G</option>
                             <option value="g1-g2">G1/G2</option>
                         </select>
@@ -182,7 +182,7 @@
                             <span class="material-icons text-gray-600 text-2xl">payment</span>
                             <span class="p-1">Number of non-payments (3 years)</span>
                         </label>
-                        <input type="number" class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-black mt-1" min="0">
+                        <input type="number" class="w-full p-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-black mt-1" min="0">
                     </div>
                 </div>
                 
@@ -192,7 +192,7 @@
                             <span class="material-icons text-gray-600 text-2xl">report_problem</span>
                             <span class="p-1">Number of at-fault claims (3 years)</span>
                         </label>
-                        <input type="number" class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-black mt-1" min="0">
+                        <input type="number" class="w-full p-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-black mt-1" min="0">
                     </div>
                 </div>
                 <div  id="convictions-container" class="rounded-lg bg-white bg-opacity-80 " >
