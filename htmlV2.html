@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>License Form</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+      // Shared function to display result
+      function displayResult(isHighRisk, provider) {
+          const formContainer = document.querySelector('form');
+          if (formContainer) {
+              formContainer.innerHTML = `
+                  <button onclick="location.reload()" class="mt-4 p-2 bg-gray-800 text-white rounded-lg shadow-md hover:bg-gray-600 transition-all flex items-center space-x-2">
+                      &#x21A9; Return
+                  </button>
+                  <div class="flex items-center justify-center min-h-screen">
+                      <div class="p-6 rounded-lg shadow-lg text-center transition-opacity duration-500 "
+                          style="background-color: ${isHighRisk ? '#8B0000' : '#008000'}; color: white; opacity: 0;" id="result-message">
+                          <h1 class="text-2xl font-bold">${isHighRisk ? 'YOU ARE HIGH RISK' : 'YOU ARE NOT HIGH RISK'}</h1>
+                      </div>
+                  </div>`;
+              setTimeout(() => {
+                  document.getElementById('result-message').style.opacity = 1;
+              }, 100);
+          }
+      }
+
+      function getConvictions() {
+        
+        const licenseTypeElement = document.querySelector('select');
+        if (!licenseTypeElement) {
+            return;
+        }
+        
+        const licenseType = licenseTypeElement.value;
+        const inputs = document.querySelectorAll('input');
+        if (inputs.length < 2) {
+            return;
+        }
+        
+        const nonPayments = parseInt(inputs[0].value) || 0;
+        const atFaultClaims = parseInt(inputs[1].value) || 0;
+        
+        const convictionElements = document.querySelectorAll('#convictions-container select');
+        let minorConvictions = 0, majorConvictions = 0, criminalConvictions = 0;
+        
+        convictionElements.forEach(select => {
+            if (select.selectedIndex !== -1) {
+                const category = select.options[select.selectedIndex].parentNode.label;
+                if (category === "MINOR") minorConvictions++;
+                if (category === "MAJOR") majorConvictions++;
+                if (category === "CRIMINAL") criminalConvictions++;
+            }
+        });
+
+        return { licenseType, nonPayments, atFaultClaims, minorConvictions, majorConvictions, criminalConvictions };
+      }
+  </script>
+  <script>  
+          function addConvictionRow() {
+              const container = document.getElementById('convictions-container');
+              const row = document.createElement('div');
+              row.className = "flex space-x-2 items-center mt-2";
+              row.innerHTML = `
+                  <select class="p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-black w-4/5">
+                      <optgroup label="MINOR">
+                          <option value="fail-or-refuse-to-surrender-licence">Fail or refuse to surrender licence</option>
+                          <option value="fail-to-produce-evidence-of-insurance">Fail to produce evidence of insurance</option>
+                          <option value="fail-to-carry-insurance-card">Fail to carry insurance card</option>
+                          <option value="fail-to-carry-evidence-of-insurance">Fail to carry evidence of insurance</option>
+                          <option value="fail-to-disclose-particulars">Fail to disclose particulars</option>
+                          <option value="fail-to-notify-police">Fail to notify police</option>
+                          <option value="yield-failing-to">Yield, failing to including failing to yield to a public bus</option>
+                      </optgroup>
+                      <optgroup label="MAJOR">
+                          <option value="failing-to-report-damage-to-highway-property">Failing to report damage to highway property</option>
+                          <option value="failure-to-stop-on-request-of-police">Failure to stop on request of or obey directions of a police officer</option>
+                          <option value="failing-to-report-an-accident">Failing to report an accident</option>
+                          <option value="fail-to-give-name-licence-number">Failing, in the event of an accident, to give name and licence number</option>
+                          <option value="fail-to-obey-school-crossing-stop-sign">Fail to obey school crossing stop sign</option>
+                      </optgroup>
+                      <optgroup label="CRIMINAL">
+                          <option value="speeding-50-kph-or-more">Speeding 50 Kph or more over the speed limit</option>
+                          <option value="driving-without-insurance">Driving without insurance</option>
+                          <option value="operating-vehicle-without-insurance">Operating vehicle without insurance</option>
+                          <option value="criminal-negligence-operation">Criminal negligence committed in the operation or use of a motor vehicle</option>
+                          <option value="manslaughter-operation-vehicle">Manslaughter committed in the operation or use of a motor vehicle</option>
+                      </optgroup>
+                  </select>
+                  <input type="number" class="p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-black w-1/5 text-right" min="0">
+              `;
+              container.appendChild(row);
+          }
+    </script>
+</head>
+<body class="flex items-center justify-center min-h-screen bg-gray-100">
+    <form class="bg-white p-6 rounded-lg shadow-lg w-96 space-y-4">
+        <label class="block text-gray-700 font-medium">License Type</label>
+        <select class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-black">
+            <option value="g">G</option>
+            <option value="g1-g2">G1/G2</option>
+        </select>
+        <div>
+            <label class="block text-gray-700 font-medium">Number of non-payments in the past 3 years</label>
+            <input type="number" class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-black" min="0">
+        </div>
+        <div>
+            <label class="block text-gray-700 font-medium">Number of at-fault claims in the past 3 years</label>
+            <input type="number" class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-black" min="0">
+        </div>
+        <div class="flex justify-between items-center">
+            <label class="text-gray-700 font-medium">Convictions in the past 3 years</label>
+            <button type="button" class="p-2 bg-black text-white rounded-lg" onclick="addConvictionRow()">+</button>
+        </div>
+        <div id="convictions-container" class="mt-2 space-y-2"></div>
+        <div class="flex justify-end">
+            <button type="submit" class="w-full max-w-[200px] p-2 bg-black text-white rounded-lg uppercase">Am I high-risk</button>
+        </div>
+    </form>
+<script>
+     // AVIVA
+    function checkRisk() {
+        const { licenseType, nonPayments, atFaultClaims, minorConvictions, majorConvictions, criminalConvictions } = getConvictions();
+      
+        let isHighRisk = false;
+        
+        if (licenseType === "g") {
+            if (atFaultClaims > 2 || criminalConvictions >= 1 || majorConvictions >= 1 || minorConvictions >= 6 || nonPayments >= 3) {
+                isHighRisk = true;
+            }
+        } else if (licenseType === "g1-g2") {
+            if (atFaultClaims >= 1 || criminalConvictions >= 1 || majorConvictions >= 1 || minorConvictions >= 3 || nonPayments >= 1) {
+                isHighRisk = true;
+            }
+        }
+
+        return isHighRisk;
+    }
+        
+    document.addEventListener('DOMContentLoaded', function() {
+      const submitButton = document.querySelector('button[type="submit"]');
+      if (submitButton) {
+          submitButton.addEventListener('click', function(event) {
+              event.preventDefault();
+              const avivaHighRisk = checkRisk();
+              const uniqaHighRisk = checkRiskUNIQA();
+              const wawaHighRisk = checkRiskWAWA();
+                                        
+              const isHighRisk = avivaHighRisk && uniqaHighRisk && wawaHighRisk;
+              
+              console.log({
+                  AVIVA: avivaHighRisk,
+                  UNIQA: uniqaHighRisk,
+                  WAWA: wawaHighRisk,
+          });      
+              displayResult(isHighRisk);
+          });
+      }
+    });
+</script>
+<script>
+    // UNIQA
+    function checkRiskUNIQA() {
+        const { licenseType, nonPayments, atFaultClaims, minorConvictions, majorConvictions, criminalConvictions } = getConvictions();
+        
+        let isHighRisk = false;
+        
+        if ((licenseType === "g" || licenseType === "g1-g2") && (atFaultClaims >= 2)) {
+            isHighRisk = true;
+        }
+        if ((licenseType === "g" || licenseType === "g1-g2") && (atFaultClaims >= 1 && minorConvictions >= 3)) {
+            isHighRisk = true;
+        }
+        if ((licenseType === "g" || licenseType === "g1-g2") && (atFaultClaims >= 2 && minorConvictions >= 2)) {
+            isHighRisk = true;
+        }
+        if ((licenseType === "g" || licenseType === "g1-g2") && majorConvictions >= 1) {
+            isHighRisk = true;
+        }
+        if ((licenseType === "g" || licenseType === "g1-g2") && criminalConvictions >= 1) {
+            isHighRisk = true;
+        }
+        if ((licenseType === "g" || licenseType === "g1-g2") && minorConvictions >= 3) {
+            isHighRisk = true;
+        }
+        if ((licenseType === "g" || licenseType === "g1-g2") && nonPayments >= 2) {
+            isHighRisk = true;
+        }
+        if ((licenseType === "g" || licenseType === "g1-g2") && atFaultClaims >= 1 && nonPayments >= 1) {
+            isHighRisk = true;
+        }
+        if ((licenseType === "g" || licenseType === "g1-g2") && nonPayments >= 1 && minorConvictions >= 1) {
+            isHighRisk = true;
+        }
+        
+        return isHighRisk;
+    }
+</script>
+<script>
+    // WAWA
+    function checkRiskWAWA() {
+        const { licenseType, nonPayments, atFaultClaims, minorConvictions, majorConvictions, criminalConvictions } = getConvictions();
+        
+        let isHighRisk = false;
+        
+        // Direct conditions
+        if (atFaultClaims >= 1 || criminalConvictions >= 1 || majorConvictions >= 1 || minorConvictions >= 3 || nonPayments >= 2) {
+            isHighRisk = true;
+        }
+        
+        if (atFaultClaims >= 2 && atFaultClaims <= 5) {
+            isHighRisk = true;
+        }
+        
+        // Combination rules
+        if (minorConvictions >= 2 && nonPayments === 0 && atFaultClaims === 0) {
+            isHighRisk = true;
+        }
+        if (nonPayments >= 1 && minorConvictions >= 2) {
+            isHighRisk = true;
+        }
+        if (nonPayments >= 2 && atFaultClaims >= 1) {
+            isHighRisk = true;
+        }
+        if (atFaultClaims >= 1 && minorConvictions >= 2) {
+            isHighRisk = true;
+        }
+        if (nonPayments >= 1 && minorConvictions >= 1 && atFaultClaims >= 1) {
+            isHighRisk = true;
+        }
+        
+        return isHighRisk;
+    }
+</script>
+</body>
+</html>
