@@ -6,7 +6,9 @@
     <title>License Form</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
   <script>
 
       function displayResult(isHighRisk, provider) {
@@ -79,43 +81,124 @@
       }
   </script>
   <script>  
-          function addConvictionRow() {
-              const container = document.getElementById('convictions-container');
-              container.classList.add('pb-3');
-              const row = document.createElement('div');
-              row.className = "flex space-x-2 items-center p-3 pt-0 pb-0";
-              row.innerHTML = `
-                  <select class="w-full p-3 border rounded-lg focus:outline-none focus:ring-1 focus:ring-black mt-1">
-                      <optgroup label="MINOR">
-                          <option value="fail-or-refuse-to-surrender-licence">Fail or refuse to surrender licence</option>
-                          <option value="fail-to-produce-evidence-of-insurance">Fail to produce evidence of insurance</option>
-                          <option value="fail-to-carry-insurance-card">Fail to carry insurance card</option>
-                          <option value="fail-to-carry-evidence-of-insurance">Fail to carry evidence of insurance</option>
-                          <option value="fail-to-disclose-particulars">Fail to disclose particulars</option>
-                          <option value="fail-to-notify-police">Fail to notify police</option>
-                          <option value="yield-failing-to">Yield, failing to including failing to yield to a public bus</option>
-                      </optgroup>
-                      <optgroup label="MAJOR">
-                          <option value="failing-to-report-damage-to-highway-property">Failing to report damage to highway property</option>
-                          <option value="failure-to-stop-on-request-of-police">Failure to stop on request of or obey directions of a police officer</option>
-                          <option value="failing-to-report-an-accident">Failing to report an accident</option>
-                          <option value="fail-to-give-name-licence-number">Failing, in the event of an accident, to give name and licence number</option>
-                          <option value="fail-to-obey-school-crossing-stop-sign">Fail to obey school crossing stop sign</option>
-                      </optgroup>
-                      <optgroup label="CRIMINAL">
-                          <option value="speeding-50-kph-or-more">Speeding 50 Kph or more over the speed limit</option>
-                          <option value="driving-without-insurance">Driving without insurance</option>
-                          <option value="operating-vehicle-without-insurance">Operating vehicle without insurance</option>
-                          <option value="criminal-negligence-operation">Criminal negligence committed in the operation or use of a motor vehicle</option>
-                          <option value="manslaughter-operation-vehicle">Manslaughter committed in the operation or use of a motor vehicle</option>
-                      </optgroup>
-                  </select>
-                  <input type="number" class="p-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-black w-1/5 text-right" min="0">
-              `;
-              container.appendChild(row);
-          }
+const convictions = [
+    {
+        category: "MINOR",
+        options: [
+            { value: "fail-or-refuse-to-surrender-licence", text: "Fail or refuse to surrender licence" },
+            { value: "fail-to-produce-evidence-of-insurance", text: "Fail to produce evidence of insurance" },
+            { value: "fail-to-carry-insurance-card", text: "Fail to carry insurance card" },
+            { value: "fail-to-carry-evidence-of-insurance", text: "Fail to carry evidence of insurance" },
+            { value: "fail-to-disclose-particulars", text: "Fail to disclose particulars" },
+            { value: "fail-to-notify-police", text: "Fail to notify police" },
+            { value: "fail-to-make-written-report", text: "Fail to make written report" },
+            { value: "backing-up-unsafe", text: "Backing up – unsafe/illegal/improper" },
+            { value: "brakes-inadequate", text: "Brakes – none/inadequate/improper" },
+            { value: "crowding-drivers-seat", text: "Crowding driver’s seat" },
+            { value: "door-opening-illegal", text: "Door opening – illegal/obstructing traffic" },
+            { value: "emergency-vehicle-safety", text: "Emergency vehicle – operating with no regard for safety" },
+            { value: "driving-imprudently", text: "Driving imprudently" },
+            { value: "driving-off-roadway", text: "Driving off roadway (including shoulder/sidewalk/median)" },
+            { value: "flagman-disobeying", text: "Flagman – disobeying" },
+            { value: "following-too-closely", text: "Following too closely (including tailgating)" },
+            { value: "headlights-improper-use", text: "Headlights/parking lights – improper/lack of use" },
+            { value: "lack-control-vehicle", text: "Lack of control of vehicle" },
+            { value: "passing-infraction", text: "Passing infraction except school bus or school/playground zone" },
+            { value: "pedestrian-crossing", text: "Pedestrian crossing violation" },
+            { value: "radar-warning-device", text: "Radar warning device in motor vehicle – if illegal in province/territory" },
+            { value: "railway-crossing", text: "Railway crossing" },
+            { value: "safety-zone-violation", text: "Safety zone violation" },
+            { value: "seatbelt-offense", text: "Seatbelt – any offence" },
+            { value: "signaling-offences", text: "Signaling offences" },
+            { value: "slow-driving-endangering", text: "Slow driving – endangering others – other type" },
+            { value: "smokescreen-device", text: "Smokescreen device on vehicle" },
+            { value: "speeding-under-50", text: "Speeding under 50 km" },
+            { value: "squealing-tires", text: "Squealing tires" },
+            { value: "stopping-illegal", text: "Stopping – illegal/improper" },
+            { value: "tires-defective", text: "Tires – defective/worn" },
+            { value: "towing-unsafe", text: "Towing – prohibited/unsafe" },
+            { value: "traffic-signals", text: "Traffic signals/regulating light" },
+            { value: "traffic-signs-disobeying", text: "Traffic signs – disobeying any legal sign except parking regulations" },
+            { value: "trailer-improper", text: "Trailer – improper attachments/improper towing" },
+            { value: "turns-illegal", text: "Turns – illegal/improper" },
+            { value: "unlicensed-driver", text: "Unlicensed driver including improper licence class" },
+            { value: "unsafe-move", text: "Unsafe move" },
+            { value: "unsafe-vehicle", text: "Unsafe vehicle" },
+            { value: "wrong-side-road", text: "Wrong side of road/wrong way" },
+            { value: "yield-failing", text: "Yield, failing to including failing to yield to a public bus" }
+        ]
+    },
+    {
+        category: "MAJOR",
+        options: [
+            { value: "fail-to-report-damage", text: "Failing to report damage to highway property" },
+            { value: "fail-to-stop-police", text: "Failure to stop on request of or obey directions of a police officer" },
+            { value: "fail-to-report-accident", text: "Failing to report an accident" },
+            { value: "fail-to-give-name", text: "Failing, in the event of an accident, to give name and licence number" },
+            { value: "fail-to-obey-school-sign", text: "Fail to obey school crossing stop sign" },
+            { value: "fail-to-slow-emergency", text: "Fail to slow for emergency vehicle/tow truck" },
+            { value: "improper-passing-school-bus", text: "Improper passing of a school bus" },
+            { value: "improper-passing-school-zone", text: "Improper passing/speeding in a school or playground zone" }
+        ]
+    },
+    {
+        category: "CRIMINAL",
+        options: [
+            { value: "speeding-over-50", text: "Speeding 50 Kph or more over the speed limit" },
+            { value: "driving-without-insurance", text: "Driving without insurance" },
+            { value: "operating-vehicle-without-insurance", text: "Operating vehicle without insurance" },
+            { value: "criminal-negligence-operation", text: "Criminal negligence committed in the operation or use of a motor vehicle" },
+            { value: "manslaughter-operation-vehicle", text: "Manslaughter committed in the operation or use of a motor vehicle" }
+        ]
+    }
+];
+
+
+function addConvictionRow() {
+    const container = document.getElementById('convictions-container');
+    container.classList.add('pb-3');
+    const row = document.createElement('div');
+    row.className = "flex space-x-2 items-center p-3 pt-0 pb-0";
+    const select = document.createElement('select');
+    select.id = "pawansel";
+select.name = "pawansel";
+    select.className = "w-full p-3 border  rounded-lg focus:outline-none focus:ring-1 focus:ring-black mt-1";
+    convictions.forEach(group => {
+        const optgroup = document.createElement('optgroup');
+        optgroup.label = group.category;
+
+        group.options.forEach(option => {
+            const opt = document.createElement('option');
+            opt.value = option.value;
+            opt.textContent = option.text;
+            optgroup.appendChild(opt);
+        });
+
+        select.appendChild(optgroup);
+    });
+    const input = document.createElement('input');
+    input.type = "number";
+    input.min = "0";
+    input.className = "p-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-black w-1/5 text-right";
+    const removeButton = document.createElement('button');
+    removeButton.type = "button";
+    removeButton.className = "p-2 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600 focus:outline-none";
+    removeButton.textContent = "✕";
+    removeButton.addEventListener("click", () => row.remove());
+    row.appendChild(select);
+    row.appendChild(input);
+    row.appendChild(removeButton);
+    container.appendChild(row);
+
+    $("#pawansel").select2({
+    placeholder: "",
+    allowClear: true
+});
+}
+
+
     </script>
-    <!-- Tailwind Custom Animations -->
+
 <style>
     @keyframes bounce {
       0%, 100% { transform: translateY(0); }
@@ -153,9 +236,10 @@
     </style>
 </head>
 <body class="flex items-center justify-center min-h-screen p-6 relative">
+    
     <!-- Background Image with Overlay -->
     <div class="absolute inset-0 bg-black bg-opacity-60" style="background: url('/images/bg.jpg') no-repeat center center/cover;"></div>
-
+  
     <!-- Main Container -->
     <div class="bg-white bg-opacity-80 p-4 rounded-2xl shadow-2xl w-full max-w-4xl border border-gray-300 flex flex-col md:flex-row relative z-10">
         
@@ -163,50 +247,66 @@
         <div class="w-full md:w-1/2 p-4">
             <h4 class="text-2xl font-bold text-center text-gray-900 border-b pb-4">HIGH RISK DRIVER ASSESSOR</h4>
             <form class="space-y-4 mt-6">
+                
+                <!-- License Type & Years Licensed in Same Row -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="flex items-start border rounded-lg p-3 shadow-sm bg-white bg-opacity-80 w-full">
+                        <div class="w-full">
+                            <label class="flex items-center text-gray-800 font-semibold"> 
+                                <span class="material-icons text-blue-600 text-2xl">badge</span>
+                                <span class="pl-2">License Type</span>
+                            </label>
+                            <select class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 mt-1">
+                                <option value="g">G</option>
+                                <option value="g1-g2">G1/G2</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start border rounded-lg p-3 shadow-sm bg-white bg-opacity-80 w-full">
+                        <div class="w-full">
+                            <label class="flex items-center text-gray-800 font-semibold"> 
+                                <span class="material-icons text-green-600 text-2xl">calendar_today</span>
+                                <span class="pl-2">Years Licensed</span>
+                            </label>
+                            <input type="number" class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 mt-1" min="0" >
+                        </div>
+                    </div>
+                </div>
+  
+                <!-- Number of Non-Payments -->
                 <div class="flex items-start border rounded-lg p-3 shadow-sm bg-white bg-opacity-80">
                     <div class="w-full">
-                        <label class="flex items-center text-gray-700 font-medium"> 
-                            <span class="material-icons text-gray-600 text-2xl">badge</span>
-                            <span class="pt-1 pl-2">License Type</span>
+                        <label class="flex items-center text-gray-800 font-semibold"> 
+                            <span class="material-icons text-red-600 text-2xl">payment</span>
+                            <span class="p-1">Number of Non-Payments (3 years)</span>
                         </label>
-                        <select class="w-full p-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-black mt-1">
-                            <option value="g">G</option>
-                            <option value="g1-g2">G1/G2</option>
-                        </select>
+                        <input type="number" class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-600 mt-1" min="0" >
+                    </div>
+                </div>
+  
+                <!-- Number of At-Fault Claims -->
+                <div class="flex items-start border rounded-lg p-3 shadow-sm bg-white bg-opacity-80">
+                    <div class="w-full">
+                        <label class="flex items-center text-gray-800 font-semibold">
+                            <span class="material-icons text-yellow-600 text-2xl">report_problem</span>
+                            <span class="p-1">Number of At-Fault Claims (3 years)</span>
+                        </label>
+                        <input type="number" class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-600 mt-1" min="0" >
                     </div>
                 </div>
                 
-                <div class="flex items-start border rounded-lg p-3 shadow-sm bg-white bg-opacity-80">
-                    <div class="w-full">
-                        <label class="flex items-center text-gray-700 font-medium"> 
-                            <span class="material-icons text-gray-600 text-2xl">payment</span>
-                            <span class="p-1">Number of non-payments (3 years)</span>
-                        </label>
-                        <input type="number" class="w-full p-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-black mt-1" min="0">
+                <div id="convictions-container" class="rounded-lg bg-white bg-opacity-80">
+                    <div class="flex items-center justify-between rounded-lg p-3 shadow-sm bg-white bg-opacity-80">
+                        <div class="flex items-center">
+                            <span class="material-icons text-purple-600 text-2xl">gavel</span>
+                            <label class="ml-4 text-gray-800 font-semibold">Convictions (3 years)</label>
+                        </div>
+                        <button type="button" class="p-2 bg-black text-white rounded-lg flex items-center gap-1" onclick="addConvictionRow()">
+                            <span class="material-icons">add</span>
+                        </button>
                     </div>
                 </div>
-                
-                <div class="flex items-start border rounded-lg p-3 shadow-sm bg-white bg-opacity-80">
-                    <div class="w-full">
-                        <label class="flex items-center text-gray-700 font-medium">
-                            <span class="material-icons text-gray-600 text-2xl">report_problem</span>
-                            <span class="p-1">Number of at-fault claims (3 years)</span>
-                        </label>
-                        <input type="number" class="w-full p-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-black mt-1" min="0">
-                    </div>
-                </div>
-                <div  id="convictions-container" class="rounded-lg bg-white bg-opacity-80 " >
-                <div class="flex items-center justify-between  rounded-lg p-3 shadow-sm bg-white bg-opacity-80">
-                    <div class="flex items-center">
-                        <span class="material-icons text-gray-600 text-2xl">gavel</span>
-                        <label class="ml-4 text-gray-700 font-medium">Convictions (3 years)</label>
-                    </div>
-                    <button type="button" class="p-2 bg-black text-white rounded-lg flex items-center gap-1" onclick="addConvictionRow()">
-                        <span class="material-icons">add</span>
-                    </button>
-                </div>
-            </div>
-                
                 
                 <div class="flex justify-center">
                     <button type="submit" class="w-full max-w-[250px] p-3 bg-black text-white rounded-lg uppercase flex items-center justify-center gap-2 shadow-lg hover:bg-gray-800">
@@ -223,9 +323,10 @@
             <p class="text-sm text-gray-600 mt-4">Our HRDA tool simplifies these complex rules to provide broad guidance on where you stand. While outright high-risk factors like fraud or misrepresentation have been omitted, the tool captures the most common reasons drivers lose coverage.</p>
             <p class="text-sm font-semibold text-gray-800 text-center mt-6">FOR A DEFINITIVE ASSESSMENT CONSULT YOUR BROKER OR INSURER</p>
         </div>
-        
     </div>
-</body>
+  
+  
+
 
 
 <script>
@@ -341,6 +442,9 @@
         
         return isHighRisk;
     }
+
+ 
 </script>
 </body>
 </html>
+
