@@ -16,8 +16,21 @@
         }
         .select2-container--default .select2-results>.select2-results__options {
     max-height: 600px;
-    font-size: 12px;
+    font-size: 14px;
     overflow-y: auto;
+}
+
+.select2-container--default .select2-selection--single {
+    background-color: #fff;
+    border: 1px solid #aaa;
+    border-radius: 8px;
+    height: auto;
+    padding: 2px;
+
+}
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    color: gray;
+    line-height: 28px;
 }
         </style>
   <script>
@@ -192,7 +205,7 @@ function addConvictionRow() {
     input.className = " p-1 m-2  border rounded-lg focus:outline-none focus:ring-1 min-w-[50px] focus:ring-black w-1/5 text-right";
     const removeButton = document.createElement('button');
     removeButton.type = "button";
-    removeButton.className = "p-2 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600 focus:outline-none";
+    removeButton.className = "px-3 py-1  bg-red-500 text-white rounded-lg hover:bg-red-600 focus:outline-none";
     removeButton.textContent = "✕";
     removeButton.addEventListener("click", () => row.remove());
     row.appendChild(select);
@@ -262,11 +275,11 @@ function addConvictionRow() {
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="flex items-start border rounded-lg p-3 shadow-sm bg-white bg-opacity-80 w-full">
                         <div class="w-full">
-                            <label class="flex items-center text-gray-800 font-semibold"> 
-                                <span class="material-icons text-blue-600 text-2xl">badge</span>
-                                <span class="pl-2">License Type</span>
+                            <label class="flex items-center text-gray-700 font-medium"> 
+                                <span class="material-icons text-gray-600 text-2xl">badge</span>
+                                <span class="pt-1 pl-2">License Type</span>
                             </label>
-                            <select class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 mt-1">
+                            <select class="w-full p-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-600 mt-1">
                                 <option value="g">G</option>
                                 <option value="g1-g2">G1/G2</option>
                             </select>
@@ -275,11 +288,11 @@ function addConvictionRow() {
                     
                     <div class="flex items-start border rounded-lg p-3 shadow-sm bg-white bg-opacity-80 w-full">
                         <div class="w-full">
-                            <label class="flex items-center text-gray-800 font-semibold"> 
-                                <span class="material-icons text-green-600 text-2xl">calendar_today</span>
-                                <span class="pl-2">Years Licensed</span>
+                            <label class="flex items-center text-gray-700 font-medium"> 
+                                <span class="material-icons text-gray-600 text-2xl">calendar_today</span>
+                                <span class="pt-0 pl-2">Years Licensed</span>
                             </label>
-                            <input type="number" class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600 mt-1" min="0" >
+                            <input type="number" class="w-full p-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-600 mt-1" min="0" >
                         </div>
                     </div>
                 </div>
@@ -287,30 +300,30 @@ function addConvictionRow() {
                 <!-- Number of Non-Payments -->
                 <div class="flex items-start border rounded-lg p-3 shadow-sm bg-white bg-opacity-80">
                     <div class="w-full">
-                        <label class="flex items-center text-gray-800 font-semibold"> 
-                            <span class="material-icons text-red-600 text-2xl">payment</span>
-                            <span class="p-1">Number of Non-Payments (3 years)</span>
+                        <label class="flex items-center text-gray-700 font-medium"> 
+                            <span class="material-icons text-gray-600 text-2xl">payment</span>
+                            <span class="pt-0 pl-2">Number of Non-Payments (3 years)</span>
                         </label>
-                        <input type="number" class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-600 mt-1" min="0" >
+                        <input type="number" class="w-full p-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-600 mt-1" min="0" >
                     </div>
                 </div>
   
                 <!-- Number of At-Fault Claims -->
                 <div class="flex items-start border rounded-lg p-3 shadow-sm bg-white bg-opacity-80">
                     <div class="w-full">
-                        <label class="flex items-center text-gray-800 font-semibold">
-                            <span class="material-icons text-yellow-600 text-2xl">report_problem</span>
-                            <span class="p-1">Number of At-Fault Claims (3 years)</span>
+                            <label class="flex items-center text-gray-700 font-medium"> 
+                                <span class="material-icons text-gray-600 text-2xl">report_problem</span>
+                            <span class="pt-0 pl-2">Number of At-Fault Claims (3 years)</span>
                         </label>
-                        <input type="number" class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-600 mt-1" min="0" >
+                        <input type="number" class="w-full p-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-600 mt-1" min="0" >
                     </div>
                 </div>
                 
                 <div id="convictions-container" class="rounded-lg bg-white bg-opacity-80">
                     <div class="flex items-center justify-between rounded-lg p-3 shadow-sm bg-white bg-opacity-80">
                         <div class="flex items-center">
-                            <span class="material-icons text-purple-600 text-2xl">gavel</span>
-                            <label class="ml-4 text-gray-800 font-semibold">Convictions (3 years)</label>
+                      
+                            <label class="flex items-center text-gray-700 font-medium"> <span class="material-icons text-gray-600 text-2xl">gavel</span>  <span class="pt-0 pl-2">Convictions (3 years)</span></label>
                         </div>
                         <button type="button" class="p-2 bg-black text-white rounded-lg flex items-center gap-1" onclick="addConvictionRow()">
                             <span class="material-icons">add</span>
