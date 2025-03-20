@@ -376,42 +376,52 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     // =====================
-function getConvictions() {
-        const licenseTypeElement = document.querySelector('#lt');
-        if (!licenseTypeElement) {
-            return;
+    function getConvictions() {
+    const licenseTypeElement = document.querySelector('#lt');
+    if (!licenseTypeElement) {
+        return;
+    }
+    const licenseType = licenseTypeElement.value;
+    const inputs = document.querySelectorAll('input');
+    if (inputs.length < 3) {
+        return;
+    }
+    const yearslicense = parseInt(inputs[0].value) || 0;
+    const nonPayments = parseInt(inputs[1].value) || 0;
+    const atFaultClaims = parseInt(inputs[2].value) || 0;
+    
+    const convictionRows = document.querySelectorAll('#convictions-container .flex.space-x-2.items-center');
+    let minorConvictions = 0, majorConvictions = 0, criminalConvictions = 0;
+    
+    convictionRows.forEach(row => {
+        const select = row.querySelector('select');
+        const input = row.querySelector('input[type="number"]');
+        const count = parseInt(input?.value) || 0;
+
+        if (select && select.selectedIndex !== -1 && count > 0) {
+            const category = select.options[select.selectedIndex].parentNode.label;
+            if (category === "MINOR") minorConvictions += count;
+            if (category === "MAJOR") majorConvictions += count;
+            if (category === "CRIMINAL") criminalConvictions += count;
         }
-        const licenseType = licenseTypeElement.value;
-        const inputs = document.querySelectorAll('input');
-        if (inputs.length < 3) {
-            return;
-        }
-        const yearslicense = parseInt(inputs[0].value) || 0;
-        const nonPayments = parseInt(inputs[1].value) || 0;
-        const atFaultClaims = parseInt(inputs[2].value) || 0;
-        
-        const convictionElements = document.querySelectorAll('#convictions-container select');
-        let minorConvictions = 0, majorConvictions = 0, criminalConvictions = 0;
-        
-        convictionElements.forEach(select => {
-            if (select.selectedIndex !== -1) {
-                const category = select.options[select.selectedIndex].parentNode.label;
-                if (category === "MINOR") minorConvictions++;
-                if (category === "MAJOR") majorConvictions++;
-                if (category === "CRIMINAL") criminalConvictions++;
-            }
-        });
-        console.log(
-  "License Type is:", licenseType, 
-  "| yearslicense:", yearslicense, 
-  "| Non Payments are:", nonPayments, 
-  "| At Fault Claims are:", atFaultClaims, 
-  "| Minor Convictions are:", minorConvictions, 
-  "| Major Convictions are:", majorConvictions, 
-  "| Criminal Convictions are:", criminalConvictions
-);
-        return { licenseType,yearslicense,nonPayments, atFaultClaims, minorConvictions, majorConvictions, criminalConvictions };
-      }
+    });
+
+    console.log(
+      "License Type:", licenseType, 
+      "| Years Licensed:", yearslicense, 
+      "| Non Payments:", nonPayments, 
+      "| At Fault Claims:", atFaultClaims, 
+      "| Minor Convictions:", minorConvictions, 
+      "| Major Convictions:", majorConvictions, 
+      "| Criminal Convictions:", criminalConvictions
+    );
+
+    return { 
+        licenseType, yearslicense, nonPayments, atFaultClaims, 
+        minorConvictions, majorConvictions, criminalConvictions 
+    };
+}
+
 
 // ==============================checkRiskStatus =============================
 
@@ -478,7 +488,6 @@ function checkEcoRisk() {
         }
     } else {
        alert("eco not support g1/g2");
-       isHighRisk = ss; 
     }
 
     return isHighRisk;
