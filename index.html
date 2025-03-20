@@ -347,7 +347,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 input.parentNode.appendChild(errorDiv);
                 hasError = true;
             }
-            if (yearsLicense === "") showError(inputs[0], "Please enter years licensed. e.g : 1,2,3...");
+            if (yearsLicense === "") {
+                showError(inputs[0], "Please enter years licensed. e.g: 1,2,3...");
+            } else if (isNaN(yearsLicense) || yearsLicense < 0 || yearsLicense >= 99) {
+                showError(inputs[0], "Years licensed must be between 0 and 99.");
+            }
             if (nonPayments === "") showError(inputs[1], "Please enter the number of non-payments. e.g : 0,1,2,3...");
             if (atFaultClaims === "") showError(inputs[2], "Please enter the number of at-fault claims. e.g : 0,1,2,3...");
             if (hasError) return;
