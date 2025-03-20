@@ -431,7 +431,7 @@ function getConvictions() {
               atFaultClaims === 0 &&
               criminalConvictions === 0 &&
               majorConvictions === 0 &&
-              minorConvictions === 0 &&
+              minorConvictions <= 2 &&
               nonPayments === 0)) {
             isHighRisk = true;
         }
