@@ -355,14 +355,17 @@ document.addEventListener('DOMContentLoaded', function() {
             if (nonPayments === "") showError(inputs[1], "Please enter the number of non-payments. e.g : 0,1,2,3...");
             if (atFaultClaims === "") showError(inputs[2], "Please enter the number of at-fault claims. e.g : 0,1,2,3...");
             if (hasError) return;
-              const avivaHighRisk = checkAvivaRisk();
+            //   const avivaHighRisk = checkAvivaRisk();
+              const ecoHighRisk = checkEcoRisk();
             //   const uniqaHighRisk = checkRiskUNIQA();
             //   const wawaHighRisk = checkRiskWAWA();
                                         
             //   const isHighRisk = avivaHighRisk && uniqaHighRisk && wawaHighRisk;
-            const isHighRisk = avivaHighRisk;
+            // const isHighRisk = avivaHighRisk;
+            const isHighRisk = ecoHighRisk;
               console.log({
-                  AVIVA: avivaHighRisk,
+                //   AVIVA: avivaHighRisk,
+                ECO  :ecoHighRisk,
                 //   UNIQA: uniqaHighRisk,
                 //   WAWA: wawaHighRisk,
           });      
@@ -416,6 +419,7 @@ function getConvictions() {
 
 </script>
 <script>
+    // ==============================checkAvivaRisk =============================
   function checkAvivaRisk() {
     const { licenseType, yearslicense, nonPayments, atFaultClaims, minorConvictions, majorConvictions, criminalConvictions } = getConvictions();
 
@@ -443,6 +447,52 @@ function getConvictions() {
 
     return isHighRisk;
 }
+
+
+// ==============================checkEcoRisk =============================
+
+function checkEcoRisk() {
+    const { licenseType, yearslicense, nonPayments, atFaultClaims, minorConvictions, majorConvictions, criminalConvictions } = getConvictions();
+
+    let isHighRisk = false;
+
+    if (licenseType === "g") {
+        if (yearslicense >= 5 && yearslicense <= 99) {
+            if (!(nonPayments <= 1 &&
+                  atFaultClaims <= 1 &&
+                  criminalConvictions <= 1 &&
+                  majorConvictions <= 1 &&
+                  minorConvictions <= 2)) {
+                isHighRisk = true;
+            }
+        } else if (yearslicense >= 1 && yearslicense < 5) {
+            if (!(nonPayments <= 1 &&
+                  atFaultClaims === 0 &&
+                  criminalConvictions === 0 &&
+                  majorConvictions === 0 &&
+                  minorConvictions <= 2)) {
+                isHighRisk = true;
+            }
+        } else {
+            isHighRisk = true; 
+        }
+    } else {
+       alert("eco not support g1/g2");
+    }
+
+    return isHighRisk;
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
 
