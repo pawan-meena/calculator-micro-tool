@@ -9,12 +9,13 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <style>
-        .select2-container {
+<style>
+.select2-container {
+            min-width: 254px;
             max-width: 264px;
             width: max-content !important;
         }
-        .select2-container--default .select2-results>.select2-results__options {
+.select2-container--default .select2-results>.select2-results__options {
     max-height: 600px;
     font-size: 14px;
     overflow-y: auto;
@@ -32,7 +33,7 @@
     color: gray;
     line-height: 28px;
 }
-        </style>
+</style>
   <script>
 
       function displayResult(isHighRisk, provider) {
@@ -73,36 +74,7 @@
           }
       }
 
-      function getConvictions() {
-        
-        const licenseTypeElement = document.querySelector('select');
-        if (!licenseTypeElement) {
-            return;
-        }
-        
-        const licenseType = licenseTypeElement.value;
-        const inputs = document.querySelectorAll('input');
-        if (inputs.length < 2) {
-            return;
-        }
-        
-        const nonPayments = parseInt(inputs[0].value) || 0;
-        const atFaultClaims = parseInt(inputs[1].value) || 0;
-        
-        const convictionElements = document.querySelectorAll('#convictions-container select');
-        let minorConvictions = 0, majorConvictions = 0, criminalConvictions = 0;
-        
-        convictionElements.forEach(select => {
-            if (select.selectedIndex !== -1) {
-                const category = select.options[select.selectedIndex].parentNode.label;
-                if (category === "MINOR") minorConvictions++;
-                if (category === "MAJOR") majorConvictions++;
-                if (category === "CRIMINAL") criminalConvictions++;
-            }
-        });
 
-        return { licenseType, nonPayments, atFaultClaims, minorConvictions, majorConvictions, criminalConvictions };
-      }
   </script>
   <script>  
 const convictions = [
@@ -180,7 +152,7 @@ const convictions = [
 
 function addConvictionRow() {
     const container = document.getElementById('convictions-container');
-    container.classList.add('pb-3');
+ 
     const row = document.createElement('div');
     row.className = "flex space-x-2 items-center p-3 pt-0 pb-0";
     const select = document.createElement('select');
@@ -269,7 +241,7 @@ function addConvictionRow() {
         <!-- Left Column (Form) -->
         <div class="w-full md:w-1/2 p-4">
             <h4 class="text-2xl font-bold text-center text-gray-900 border-b pb-4">HIGH RISK DRIVER ASSESSOR</h4>
-            <form class="space-y-4 mt-6">
+            <form class="space-y-4 mt-6" >
                 
                 <!-- License Type & Years Licensed in Same Row -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -279,7 +251,7 @@ function addConvictionRow() {
                                 <span class="material-icons text-gray-600 text-2xl">badge</span>
                                 <span class="pt-1 pl-2">License Type</span>
                             </label>
-                            <select class="w-full p-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-600 mt-1">
+                            <select id ="lt" class="w-full p-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-600 mt-1">
                                 <option value="g">G</option>
                                 <option value="g1-g2">G1/G2</option>
                             </select>
@@ -292,7 +264,7 @@ function addConvictionRow() {
                                 <span class="material-icons text-gray-600 text-2xl">calendar_today</span>
                                 <span class="pt-0 pl-2">Years Licensed</span>
                             </label>
-                            <input type="number" class="w-full p-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-600 mt-1" min="0" >
+                            <input type="number" class="w-full p-1 border rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-600 mt-1" min="0"  required>
                         </div>
                     </div>
                 </div>
@@ -302,9 +274,9 @@ function addConvictionRow() {
                     <div class="w-full">
                         <label class="flex items-center text-gray-700 font-medium"> 
                             <span class="material-icons text-gray-600 text-2xl">payment</span>
-                            <span class="pt-0 pl-2">Number of Non-Payments (3 years)</span>
+                            <span class="pt-0 pl-2">Number of non-payments in 3 years </span>
                         </label>
-                        <input type="number" class="w-full p-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-600 mt-1" min="0" >
+                        <input type="number" class="w-full p-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-600 mt-1" min="0"  required>
                     </div>
                 </div>
   
@@ -313,9 +285,9 @@ function addConvictionRow() {
                     <div class="w-full">
                             <label class="flex items-center text-gray-700 font-medium"> 
                                 <span class="material-icons text-gray-600 text-2xl">report_problem</span>
-                            <span class="pt-0 pl-2">Number of At-Fault Claims (3 years)</span>
+                            <span class="pt-0 pl-2">Number of At-Fault claims in 3 years </span>
                         </label>
-                        <input type="number" class="w-full p-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-600 mt-1" min="0" >
+                        <input type="number" class="w-full p-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-600 mt-1" min="0"  required>
                     </div>
                 </div>
                 
@@ -352,48 +324,124 @@ function addConvictionRow() {
 
 
 
-<script>
-     // AVIVA
-    function checkRisk() {
-        const { licenseType, nonPayments, atFaultClaims, minorConvictions, majorConvictions, criminalConvictions } = getConvictions();
-      
-        let isHighRisk = false;
-        
-        if (licenseType === "g") {
-            if (atFaultClaims > 2 || criminalConvictions >= 1 || majorConvictions >= 1 || minorConvictions >= 6 || nonPayments >= 3) {
-                isHighRisk = true;
-            }
-        } else if (licenseType === "g1-g2") {
-            if (atFaultClaims >= 1 || criminalConvictions >= 1 || majorConvictions >= 1 || minorConvictions >= 3 || nonPayments >= 1) {
-                isHighRisk = true;
-            }
-        }
-
-        return isHighRisk;
-    }
-        
-    document.addEventListener('DOMContentLoaded', function() {
+<script> 
+document.addEventListener('DOMContentLoaded', function() {
       const submitButton = document.querySelector('button[type="submit"]');
       if (submitButton) {
           submitButton.addEventListener('click', function(event) {
               event.preventDefault();
-              const avivaHighRisk = checkRisk();
-              const uniqaHighRisk = checkRiskUNIQA();
-              const wawaHighRisk = checkRiskWAWA();
+            const licenseTypeElement = document.querySelector('#lt');
+            if (!licenseTypeElement) return;
+            const licenseType = licenseTypeElement.value;
+            const inputs = document.querySelectorAll('input[type="number"]');
+            if (inputs.length < 3) return;
+            document.querySelectorAll('.error-message').forEach(el => el.remove());
+            const yearsLicense = inputs[0].value.trim();
+            const nonPayments = inputs[1].value.trim();
+            const atFaultClaims = inputs[2].value.trim();
+            let hasError = false;
+            function showError(input, message) {
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'error-message text-red-500 text-sm mt-1';
+                errorDiv.innerText = message;
+                input.parentNode.appendChild(errorDiv);
+                hasError = true;
+            }
+            if (yearsLicense === "") showError(inputs[0], "Please enter years licensed. e.g : 1,2,3...");
+            if (nonPayments === "") showError(inputs[1], "Please enter the number of non-payments. e.g : 0,1,2,3...");
+            if (atFaultClaims === "") showError(inputs[2], "Please enter the number of at-fault claims. e.g : 0,1,2,3...");
+            if (hasError) return;
+              const avivaHighRisk = checkAvivaRisk();
+            //   const uniqaHighRisk = checkRiskUNIQA();
+            //   const wawaHighRisk = checkRiskWAWA();
                                         
-              const isHighRisk = avivaHighRisk && uniqaHighRisk && wawaHighRisk;
-              
+            //   const isHighRisk = avivaHighRisk && uniqaHighRisk && wawaHighRisk;
+            const isHighRisk = avivaHighRisk;
               console.log({
                   AVIVA: avivaHighRisk,
-                  UNIQA: uniqaHighRisk,
-                  WAWA: wawaHighRisk,
+                //   UNIQA: uniqaHighRisk,
+                //   WAWA: wawaHighRisk,
           });      
               displayResult(isHighRisk);
           });
       }
     });
+
+
+    // =====================
+function getConvictions() {
+        const licenseTypeElement = document.querySelector('#lt');
+        if (!licenseTypeElement) {
+            return;
+        }
+        const licenseType = licenseTypeElement.value;
+        const inputs = document.querySelectorAll('input');
+        if (inputs.length < 3) {
+            return;
+        }
+        const yearslicense = parseInt(inputs[0].value) || 0;
+        const nonPayments = parseInt(inputs[1].value) || 0;
+        const atFaultClaims = parseInt(inputs[2].value) || 0;
+        
+        const convictionElements = document.querySelectorAll('#convictions-container select');
+        let minorConvictions = 0, majorConvictions = 0, criminalConvictions = 0;
+        
+        convictionElements.forEach(select => {
+            if (select.selectedIndex !== -1) {
+                const category = select.options[select.selectedIndex].parentNode.label;
+                if (category === "MINOR") minorConvictions++;
+                if (category === "MAJOR") majorConvictions++;
+                if (category === "CRIMINAL") criminalConvictions++;
+            }
+        });
+        console.log(
+  "License Type is:", licenseType, 
+  "| yearslicense:", yearslicense, 
+  "| Non Payments are:", nonPayments, 
+  "| At Fault Claims are:", atFaultClaims, 
+  "| Minor Convictions are:", minorConvictions, 
+  "| Major Convictions are:", majorConvictions, 
+  "| Criminal Convictions are:", criminalConvictions
+);
+        return { licenseType,yearslicense,nonPayments, atFaultClaims, minorConvictions, majorConvictions, criminalConvictions };
+      }
+
+// ==============================checkRiskStatus =============================
+
+
+
 </script>
 <script>
+  function checkAvivaRisk() {
+    const { licenseType, yearslicense, nonPayments, atFaultClaims, minorConvictions, majorConvictions, criminalConvictions } = getConvictions();
+
+    let isHighRisk = false;
+
+    if (licenseType === "g") {
+        if (!(yearslicense >= 3 && yearslicense <= 99 &&
+              atFaultClaims === 0 &&
+              criminalConvictions === 0 &&
+              majorConvictions === 0 &&
+              minorConvictions <= 2 &&
+              nonPayments === 0)) {
+            isHighRisk = true;
+        }
+    } else if (licenseType === "g1-g2") {
+        if (!(yearslicense >= 5 && yearslicense <= 99 &&
+              atFaultClaims === 0 &&
+              criminalConvictions === 0 &&
+              majorConvictions === 0 &&
+              minorConvictions === 0 &&
+              nonPayments === 0)) {
+            isHighRisk = true;
+        }
+    }
+
+    return isHighRisk;
+}
+
+
+
     function checkRiskUNIQA() {
         const { licenseType, nonPayments, atFaultClaims, minorConvictions, majorConvictions, criminalConvictions } = getConvictions();
         
