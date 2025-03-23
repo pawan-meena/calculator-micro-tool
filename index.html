@@ -11,6 +11,7 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <style>
 .select2-container {
+
             min-width: 254px;
             max-width: 264px;
             width: max-content !important;
@@ -356,16 +357,23 @@ document.addEventListener('DOMContentLoaded', function() {
             if (atFaultClaims === "") showError(inputs[2], "Please enter the number of at-fault claims. e.g : 0,1,2,3...");
             if (hasError) return;
             //   const avivaHighRisk = checkAvivaRisk();
-              const ecoHighRisk = checkEcoRisk();
+            //   const ecoHighRisk = checkEcoRisk();
+            const sgiHighRisk = checkSgiRisk();
             //   const uniqaHighRisk = checkRiskUNIQA();
             //   const wawaHighRisk = checkRiskWAWA();
                                         
             //   const isHighRisk = avivaHighRisk && uniqaHighRisk && wawaHighRisk;
             // const isHighRisk = avivaHighRisk;
-            const isHighRisk = ecoHighRisk;
+            // const isHighRisk = ecoHighRisk;
+            const isHighRisk = sgiHighRisk;
               console.log({
                 //   AVIVA: avivaHighRisk,
-                ECO  :ecoHighRisk,
+                // ECO  :ecoHighRisk,
+                SGI  : sgiHighRisk,
+                //   AVIVA: avivaHighRisk,
+                //   ECO  : ecoHighRisk,
+                //   SGI  : sgiHighRisk,
+                //   // AVIVA: avivaHighRisk,
                 //   UNIQA: uniqaHighRisk,
                 //   WAWA: wawaHighRisk,
           });      
@@ -405,7 +413,6 @@ document.addEventListener('DOMContentLoaded', function() {
             if (category === "CRIMINAL") criminalConvictions += count;
         }
     });
-
     console.log(
       "License Type:", licenseType, 
       "| Years Licensed:", yearslicense, 
@@ -415,7 +422,6 @@ document.addEventListener('DOMContentLoaded', function() {
       "| Major Convictions:", majorConvictions, 
       "| Criminal Convictions:", criminalConvictions
     );
-
     return { 
         licenseType, yearslicense, nonPayments, atFaultClaims, 
         minorConvictions, majorConvictions, criminalConvictions 
@@ -426,10 +432,9 @@ document.addEventListener('DOMContentLoaded', function() {
 // ==============================checkRiskStatus =============================
 
 
+// ==============================checkAvivaRisk =============================
 
-</script>
-<script>
-    // ==============================checkAvivaRisk =============================
+ßß
   function checkAvivaRisk() {
     const { licenseType, yearslicense, nonPayments, atFaultClaims, minorConvictions, majorConvictions, criminalConvictions } = getConvictions();
 
@@ -488,6 +493,43 @@ function checkEcoRisk() {
         }
     } else {
        alert("eco not support g1/g2");
+    }
+
+    return isHighRisk;
+}
+
+// ==============================checkSgiRisk =============================
+
+function checkSgiRisk() {
+    const { licenseType, yearslicense, nonPayments, atFaultClaims, minorConvictions, majorConvictions, criminalConvictions } = getConvictions();
+
+    let isHighRisk = false;
+
+    if (licenseType === "g") {
+        if (yearslicense >= 6 && yearslicense <= 99) {
+            if (!(nonPayments <= 3 &&
+                  atFaultClaims <= 2 &&
+                  criminalConvictions <= 1 &&
+                  majorConvictions <= 1 &&
+                  minorConvictions <= 5)) {
+                isHighRisk = true;
+            }
+        } else {
+        
+        }
+    } else if (licenseType === "g1-g2") {
+        if (yearslicense >= 6 && yearslicense <= 99) {
+            if (!(nonPayments <= 1 &&
+                  atFaultClaims <= 1 &&
+                  criminalConvictions <= 1 &&
+                  majorConvictions <= 1)) {
+                isHighRisk = true;
+            }
+        } else {
+           
+        }
+    } else {
+        alert("SGI does not support this license type.");
     }
 
     return isHighRisk;
