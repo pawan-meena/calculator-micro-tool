@@ -356,18 +356,18 @@ document.addEventListener('DOMContentLoaded', function() {
             if (nonPayments === "") showError(inputs[1], "Please enter the number of non-payments. e.g : 0,1,2,3...");
             if (atFaultClaims === "") showError(inputs[2], "Please enter the number of at-fault claims. e.g : 0,1,2,3...");
             if (hasError) return;
-            //   const avivaHighRisk = checkAvivaRisk();
+             //   const avivaHighRisk = checkAvivaRisk();
             //   const ecoHighRisk = checkEcoRisk();
             const sgiHighRisk = checkSgiRisk();
             //   const uniqaHighRisk = checkRiskUNIQA();
             //   const wawaHighRisk = checkRiskWAWA();
-                                        
+                          
             //   const isHighRisk = avivaHighRisk && uniqaHighRisk && wawaHighRisk;
             // const isHighRisk = avivaHighRisk;
             // const isHighRisk = ecoHighRisk;
             const isHighRisk = sgiHighRisk;
               console.log({
-                //   AVIVA: avivaHighRisk,
+                //  AVIVA: avivaHighRisk,
                 // ECO  :ecoHighRisk,
                 SGI  : sgiHighRisk,
                 //   AVIVA: avivaHighRisk,
@@ -434,7 +434,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // ==============================checkAvivaRisk =============================
 
-ßß
   function checkAvivaRisk() {
     const { licenseType, yearslicense, nonPayments, atFaultClaims, minorConvictions, majorConvictions, criminalConvictions } = getConvictions();
 
@@ -499,34 +498,30 @@ function checkEcoRisk() {
 }
 
 // ==============================checkSgiRisk =============================
-
 function checkSgiRisk() {
-    const { licenseType, yearslicense, nonPayments, atFaultClaims, minorConvictions, majorConvictions, criminalConvictions } = getConvictions();
+    let { licenseType, yearslicense, nonPayments, atFaultClaims, minorConvictions, majorConvictions, criminalConvictions } = getConvictions();
 
     let isHighRisk = false;
+    let minYearsRequired = atFaultClaims === 1 ? 6 : 3;
+
+    if (yearslicense < minYearsRequired) {
+        return true;
+    }
 
     if (licenseType === "g") {
-        if (yearslicense >= 6 && yearslicense <= 99) {
-            if (!(nonPayments <= 3 &&
-                  atFaultClaims <= 2 &&
-                  criminalConvictions <= 1 &&
-                  majorConvictions <= 1 &&
-                  minorConvictions <= 5)) {
-                isHighRisk = true;
-            }
-        } else {
-        
+        if (!(nonPayments <= 3 &&
+              atFaultClaims <= 2 &&
+              criminalConvictions <= 1 &&
+              majorConvictions <= 1 &&
+              minorConvictions <= 5)) {
+            isHighRisk = true;
         }
     } else if (licenseType === "g1-g2") {
-        if (yearslicense >= 6 && yearslicense <= 99) {
-            if (!(nonPayments <= 1 &&
-                  atFaultClaims <= 1 &&
-                  criminalConvictions <= 1 &&
-                  majorConvictions <= 1)) {
-                isHighRisk = true;
-            }
-        } else {
-           
+        if (!(nonPayments <= 1 &&
+              atFaultClaims <= 1 &&
+              criminalConvictions <= 1 &&
+              majorConvictions <= 1)) {
+            isHighRisk = true;
         }
     } else {
         alert("SGI does not support this license type.");
@@ -534,6 +529,7 @@ function checkSgiRisk() {
 
     return isHighRisk;
 }
+
 
 
 
