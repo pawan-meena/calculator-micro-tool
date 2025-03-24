@@ -500,10 +500,9 @@ function checkEcoRisk() {
 // ==============================checkSgiRisk =============================
 function checkSgiRisk() {
     let { licenseType, yearslicense, nonPayments, atFaultClaims, minorConvictions, majorConvictions, criminalConvictions } = getConvictions();
-
     let isHighRisk = false;
-    let minYearsRequired = atFaultClaims === 1 ? 6 : 3;
-
+    let minYearsRequired = atFaultClaims > 0 ? 6 : 3;
+    
     if (yearslicense < minYearsRequired) {
         return true;
     }
@@ -525,6 +524,7 @@ function checkSgiRisk() {
         }
     } else {
         alert("SGI does not support this license type.");
+        return true; 
     }
 
     return isHighRisk;
@@ -534,9 +534,76 @@ function checkSgiRisk() {
 
 
 
+// ==============================checkTravellersRisk =============================
+function checkTravellersRisk() {
+    const { licenseType, yearslicense, nonPayments, atFaultClaims, minorConvictions, majorConvictions, criminalConvictions } = getConvictions();
 
+    let isHighRisk = false;
 
+    if (licenseType === "g") {
+        if (yearslicense >= 3 && yearslicense <= 99) {
+            if (!(nonPayments <= 2 &&
+                  atFaultClaims <= 2 &&
+                  criminalConvictions === 0 &&
+                  majorConvictions === 0 &&
+                  minorConvictions <= 3)) {
+                isHighRisk = true;
+            }
 
+            if (
+                (nonPayments === 2 && minorConvictions === 1) || 
+                (nonPayments === 2 && atFaultClaims === 1) ||   
+                (nonPayments === 1 && yearslicense >= 6 && minorConvictions === 2) ||  
+                (nonPayments === 1 && yearslicense >= 6 && atFaultClaims === 1)        
+            ) {
+                isHighRisk = false;
+            }
+        } else {
+            isHighRisk = true;
+        }
+    } else {
+        alert("Travellers does not support this license type.");
+    }
+
+    return isHighRisk;
+}
+
+// ==============================checkWawaRisk =============================
+function checkWawaRisk() {
+    const { licenseType, yearslicense, nonPayments, atFaultClaims, minorConvictions, majorConvictions, criminalConvictions } = getConvictions();
+
+    let isHighRisk = true; // Default to high risk
+
+    if (licenseType === "g") {
+        if (yearslicense >= 3 && yearslicense <= 99) {
+            if (nonPayments <= 1 &&
+                atFaultClaims === 0 &&
+                criminalConvictions === 0 &&
+                majorConvictions === 0 &&
+                minorConvictions <= 2) {
+                isHighRisk = false; 
+        }
+
+    
+        if (
+            (minorConvictions < 2 && yearslicense < 4) ||  
+            (nonPayments < 1 && minorConvictions < 2) ||   
+            (nonPayments < 2 && atFaultClaims < 1) ||      
+            (atFaultClaims < 1 && minorConvictions < 2) ||  
+            (nonPayments < 1 && minorConvictions < 1 && yearslicense < 3) || 
+            (nonPayments < 1 && minorConvictions < 1 && atFaultClaims < 1)  
+        ) {
+            isHighRisk = false; 
+        }
+
+    } else {
+        alert("Wawa does not support this license type.");
+    }
+
+    return isHighRisk;
+}
+
+// ==============================checkWawaRisk =============================
 
 
 
