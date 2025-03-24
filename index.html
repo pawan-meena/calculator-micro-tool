@@ -494,6 +494,7 @@ function checkEcoRisk() {
         }
     } else {
        alert("eco not support g1/g2");
+       isHighRisk = true;
     }
 
     return isHighRisk;
@@ -526,7 +527,7 @@ function checkSgiRisk() {
         }
     } else {
         alert("SGI does not support this license type.");
-        return true; 
+        isHighRisk = true;
     }
 
     return isHighRisk;
@@ -565,6 +566,7 @@ function checkTravellersRisk() {
         }
     } else {
         alert("Travellers does not support this license type.");
+        isHighRisk = true;
     }
 
     return isHighRisk;
