@@ -541,17 +541,25 @@ function checkSgiRisk() {
 function checkTravellersRisk() {
     const { licenseType, yearslicense, nonPayments, atFaultClaims, minorConvictions, majorConvictions, criminalConvictions } = getConvictions();
 
-    let isHighRisk = false;
+    let isHighRisk = true;
 
     if (licenseType === "g") {
         if (yearslicense >= 3 && yearslicense <= 99) {
-           
+            if (!(nonPayments <= 2 &&
+                  atFaultClaims <= 2 &&
+                  criminalConvictions === 0 &&
+                  majorConvictions === 0 &&
+                  minorConvictions <= 3)) {
+                isHighRisk = true;
+            }
 
             if (
                 (nonPayments < 2 && minorConvictions < 2) || 
                 (nonPayments < 2 && atFaultClaims < 2) ||   
                 (nonPayments < 2 && yearslicense >= 6 && minorConvictions < 2) ||  
                 (nonPayments < 2 && yearslicense >= 6 && atFaultClaims < 1)      
+                
+            
 
             ) {
                 isHighRisk = false;
