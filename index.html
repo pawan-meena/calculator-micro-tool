@@ -554,10 +554,11 @@ function checkTravellersRisk() {
             }
 
             if (
-                (nonPayments === 2 && minorConvictions === 1) || 
-                (nonPayments === 2 && atFaultClaims === 1) ||   
-                (nonPayments === 1 && yearslicense >= 6 && minorConvictions === 2) ||  
-                (nonPayments === 1 && yearslicense >= 6 && atFaultClaims === 1)        
+                (nonPayments < 2 && minorConvictions < 2) || 
+                (nonPayments < 2 && atFaultClaims < 2) ||   
+                (nonPayments < 2 && yearslicense >= 6 && minorConvictions < 2) ||  
+                (nonPayments < 2 && yearslicense >= 6 && atFaultClaims < 1)      
+
             ) {
                 isHighRisk = false;
             }
