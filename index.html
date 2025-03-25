@@ -359,7 +359,9 @@ document.addEventListener('DOMContentLoaded', function() {
              //   const avivaHighRisk = checkAvivaRisk();
             //   const ecoHighRisk = checkEcoRisk();
             // const sgiHighRisk = checkSgiRisk();
-            const travellersHighRisk = checkTravellersRisk();
+            // const travellersHighRisk = checkTravellersRisk();
+            const wawaHighRisk = checkWawaRisk();
+
             //   const uniqaHighRisk = checkRiskUNIQA();
             //   const wawaHighRisk = checkRiskWAWA();
                           
@@ -367,7 +369,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // const isHighRisk = avivaHighRisk;
             // const isHighRisk = ecoHighRisk;
             // const isHighRisk = sgiHighRisk;
-            const isHighRisk = travellersHighRisk;
+            const isHighRisk = wawaHighRisk;
               console.log({
                 //  AVIVA: avivaHighRisk,
                 // ECO  :ecoHighRisk,
@@ -600,26 +602,40 @@ function checkTravellersRisk() {
 function checkWawaRisk() {
     const { licenseType, yearslicense, nonPayments, atFaultClaims, minorConvictions, majorConvictions, criminalConvictions } = getConvictions();
 
-    let isHighRisk = true; // Default to high risk
+    let isHighRisk = true; 
 
     if (licenseType === "g") {
         if (yearslicense >= 3 && yearslicense <= 99) {
-            if (nonPayments <= 1 &&
-                atFaultClaims === 0 &&
-                criminalConvictions === 0 &&
-                majorConvictions === 0 &&
-                minorConvictions <= 2) {
-                isHighRisk = false; 
-        }
+            if (
+    nonPayments <= 1 &&
+    (atFaultClaims === 0 || (atFaultClaims > 0 && years >= 5)) &&
+    criminalConvictions === 0 &&
+    majorConvictions === 0 &&
+    minorConvictions <= 2
+) {
+    isHighRisk = false;
+}
 
     
         if (
-            (minorConvictions < 2 && yearslicense < 4) ||  
-            (nonPayments < 1 && minorConvictions < 2) ||   
-            (nonPayments < 2 && atFaultClaims < 1) ||      
-            (atFaultClaims < 1 && minorConvictions < 2) ||  
-            (nonPayments < 1 && minorConvictions < 1 && yearslicense < 3) || 
-            (nonPayments < 1 && minorConvictions < 1 && atFaultClaims < 1)  
+            (minorConvictions < 2 && yearslicense < 4 && nonPayments ===0 && atFaultClaims === 0  && majorConvictions === 0 && criminalConvictions === 0 ) 
+            
+            ||  
+            (nonPayments < 2  && minorConvictions < 2  && atFaultClaims === 0  && majorConvictions === 0 && criminalConvictions === 0 )  ||   
+            (
+                nonPayments < 2 && ((atFaultClaims === 0 && years >= 6))
+                  && minorConvictions === 0   && majorConvictions === 0 && criminalConvictions === 0
+
+
+            ) ||      
+            (nonPayments === 0  && minorConvictions < 2  &&   (atFaultClaims === 0 || (atFaultClaims > 0 && years >= 6))   && majorConvictions === 0 && criminalConvictions === 0 ) ||  
+            
+            (
+                
+            nonPayments <2  && minorConvictions < 1  &&   atFaultClaims === 0   && majorConvictions === 0 && criminalConvictions === 0 
+        
+        ) || 
+            (  nonPayments <2  && minorConvictions < 2  &&   (atFaultClaims === 0 && years >= 6)   && majorConvictions === 0 && criminalConvictions === 0 )  
         ) {
             isHighRisk = false; 
         }
