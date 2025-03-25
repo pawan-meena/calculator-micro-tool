@@ -554,14 +554,23 @@ function checkTravellersRisk() {
             }
 
             if (
-                (nonPayments < 2 && minorConvictions < 2) || 
-                (nonPayments < 2 && atFaultClaims < 2) ||   
-                (nonPayments < 2 && yearslicense >= 6 && minorConvictions < 2) ||  
-                (nonPayments < 2 && yearslicense >= 6 && atFaultClaims < 1)      
+                (nonPayments < 2 && minorConvictions < 2 && minorConvictions === 0 &&
+    majorConvictions === 0 &&
+    majorConvictions === 0) || 
+    (nonPayments < 2 && atFaultClaims < 2 && minorConvictions === 0 &&
+    majorConvictions === 0 &&
+    majorConvictions === 0) ||   
+    (nonPayments < 2 && (yearslicense >= 6 && minorConvictions < 2)  &&
+    majorConvictions === 0 &&
+    majorConvictions === 0) ||  
+    (nonPayments < 2 && (yearslicense >= 6 && atFaultClaims < 1) && minorConvictions === 0 &&
+    majorConvictions === 0 &&
+    majorConvictions === 0)      
                 
             
 
             ) {
+               
                 isHighRisk = false;
             }
         } else {
