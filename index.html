@@ -38,11 +38,6 @@
   <script>
 
       function displayResult(isHighRisk, provider) {
-        if (isHighRisk === null) {
-    alert('Ivalid parmeter=');
-    return;
-}
-
           const formContainer = document.querySelector('form');
           if (formContainer) {
               formContainer.innerHTML = `<!-- Return Button -->
@@ -282,7 +277,7 @@ function addConvictionRow() {
                             <span class="material-icons text-gray-600 text-2xl">payment</span>
                             <span class="pt-0 pl-2">Number of non-payments in 3 years </span>
                         </label>
-                        <input type="number" class="w-full p-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-600 mt-1" min="0"  >
+                        <input type="number" class="w-full p-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-600 mt-1" min="0"  required>
                     </div>
                 </div>
   
@@ -293,7 +288,7 @@ function addConvictionRow() {
                                 <span class="material-icons text-gray-600 text-2xl">report_problem</span>
                             <span class="pt-0 pl-2">Number of At-Fault claims in 3 years </span>
                         </label>
-                        <input type="number" class="w-full p-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-600 mt-1" min="0"  >
+                        <input type="number" class="w-full p-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-600 mt-1" min="0"  required>
                     </div>
                 </div>
                 
@@ -358,7 +353,8 @@ document.addEventListener('DOMContentLoaded', function() {
             } else if (isNaN(yearsLicense) || yearsLicense < 0 || yearsLicense >= 99) {
                 showError(inputs[0], "Years licensed must be between 0 and 99.");
             }
-           
+            if (nonPayments === "") showError(inputs[1], "Please enter the number of non-payments. e.g : 0,1,2,3...");
+            if (atFaultClaims === "") showError(inputs[2], "Please enter the number of at-fault claims. e.g : 0,1,2,3...");
             if (hasError) return;
              //   const avivaHighRisk = checkAvivaRisk();
             //   const ecoHighRisk = checkEcoRisk();
@@ -397,31 +393,30 @@ document.addEventListener('DOMContentLoaded', function() {
     if (!licenseTypeElement) {
         return;
     }
-    const licenseType = licenseTypeElement.value || null;
+    const licenseType = licenseTypeElement.value;
     const inputs = document.querySelectorAll('input');
     if (inputs.length < 3) {
         return;
     }
-    const yearslicense = inputs[0].value.trim() ? parseInt(inputs[0].value) : null;
-    const nonPayments = inputs[1].value.trim() ? parseInt(inputs[1].value) : null;
-    const atFaultClaims = inputs[2].value.trim() ? parseInt(inputs[2].value) : null;
+    const yearslicense = parseInt(inputs[0].value) || 0;
+    const nonPayments = parseInt(inputs[1].value) || 0;
+    const atFaultClaims = parseInt(inputs[2].value) || 0;
     
     const convictionRows = document.querySelectorAll('#convictions-container .flex.space-x-2.items-center');
-    let minorConvictions = null, majorConvictions = null, criminalConvictions = null;
+    let minorConvictions = 0, majorConvictions = 0, criminalConvictions = 0;
     
     convictionRows.forEach(row => {
         const select = row.querySelector('select');
         const input = row.querySelector('input[type="number"]');
-        const count = input?.value.trim() ? parseInt(input.value) : null;
+        const count = parseInt(input?.value) || 0;
 
-        if (select && select.selectedIndex !== -1 && count !== null) {
+        if (select && select.selectedIndex !== -1 && count > 0) {
             const category = select.options[select.selectedIndex].parentNode.label;
-            if (category === "MINOR") minorConvictions = (minorConvictions ?? 0) + count;
-            if (category === "MAJOR") majorConvictions = (majorConvictions ?? 0) + count;
-            if (category === "CRIMINAL") criminalConvictions = (criminalConvictions ?? 0) + count;
+            if (category === "MINOR") minorConvictions += count;
+            if (category === "MAJOR") majorConvictions += count;
+            if (category === "CRIMINAL") criminalConvictions += count;
         }
     });
-
     console.log(
       "License Type:", licenseType, 
       "| Years Licensed:", yearslicense, 
@@ -431,13 +426,11 @@ document.addEventListener('DOMContentLoaded', function() {
       "| Major Convictions:", majorConvictions, 
       "| Criminal Convictions:", criminalConvictions
     );
-
     return { 
         licenseType, yearslicense, nonPayments, atFaultClaims, 
         minorConvictions, majorConvictions, criminalConvictions 
     };
 }
-
 
 
 // ==============================checkRiskStatus =============================
@@ -609,7 +602,7 @@ function checkTravellersRisk() {
 function checkWawaRisk() {
     const { licenseType, yearslicense, nonPayments, atFaultClaims, minorConvictions, majorConvictions, criminalConvictions } = getConvictions();
 
-    let isHighRisk = null; 
+    let isHighRisk = true; 
 
     if (licenseType === "g") {
         if (yearslicense >= 3 && yearslicense <= 99) {
@@ -619,44 +612,31 @@ function checkWawaRisk() {
     criminalConvictions === 0 &&
     majorConvictions === 0 &&
     minorConvictions <= 2
-) { alert("pawan");
+) {
     isHighRisk = false;
 }
 
     
-if (
-    (
-        (minorConvictions !== null && minorConvictions < 2) &&
-        (yearslicense !== null && yearslicense < 4)
-    ) ||
-    (
-        (nonPayments !== null && nonPayments < 2) &&
-        (minorConvictions !== null && minorConvictions < 2)
-    ) ||
-    (
-        (nonPayments !== null && nonPayments < 2) &&
-        (atFaultClaims !== null && atFaultClaims === 0) &&
-        (yearslicense !== null && yearslicense >= 6)
-    ) ||
-    (
-        (nonPayments !== null && nonPayments === 0) &&
-        (minorConvictions !== null && minorConvictions < 2) &&
-        (
-            (atFaultClaims !== null && atFaultClaims === 0) ||
-            (atFaultClaims !== null && atFaultClaims > 0 && yearslicense !== null && yearslicense >= 6)
-        )
-    ) ||
-    (
-        (nonPayments !== null && nonPayments < 2) &&
-        (minorConvictions !== null && minorConvictions < 1)
-    ) ||
-    (
-        (nonPayments !== null && nonPayments < 2) &&
-        (minorConvictions !== null && minorConvictions < 2) &&
-        (atFaultClaims !== null && atFaultClaims === 0) &&
-        (yearslicense !== null && yearslicense >= 6)
-    )
-) {
+        if (
+            (minorConvictions < 2 && yearslicense < 4 && nonPayments ===0 && atFaultClaims === 0  && majorConvictions === 0 && criminalConvictions === 0 ) 
+            
+            ||  
+            (nonPayments < 2  && minorConvictions < 2  && atFaultClaims === 0  && majorConvictions === 0 && criminalConvictions === 0 )  ||   
+            (
+                nonPayments < 2 && (atFaultClaims === 0 && yearslicense >= 6)
+                  && minorConvictions === 0   && majorConvictions === 0 && criminalConvictions === 0
+
+
+            ) ||      
+            (nonPayments === 0  && minorConvictions < 2  &&   (atFaultClaims === 0 || (atFaultClaims > 0 && yearslicense >= 6))   && majorConvictions === 0 && criminalConvictions === 0 ) ||  
+            
+            (
+                
+            nonPayments <2  && minorConvictions < 1  &&   atFaultClaims === 0   && majorConvictions === 0 && criminalConvictions === 0 
+        
+        ) || 
+            (  nonPayments <2  && minorConvictions < 2  &&   (atFaultClaims === 0 && yearslicense >= 6)   && majorConvictions === 0 && criminalConvictions === 0 )  
+        ) {
 
            alert('comm');
             isHighRisk = false; 
