@@ -606,7 +606,12 @@ function checkWawaRisk() {
 
     if (licenseType === "g") {
         if (yearslicense >= 3 && yearslicense <= 99) {
+
+            if ([nonPayments, atFaultClaims, criminalConvictions, majorConvictions, minorConvictions].filter(v => v > 0).length < 2) {
+
             if (
+
+
     nonPayments <= 1 &&
     (atFaultClaims === 0 || (atFaultClaims === 1 && years >= 5)) &&
     criminalConvictions === 0 &&
@@ -615,7 +620,7 @@ function checkWawaRisk() {
 ) {
     isHighRisk = false;
 }
-
+            } else{
     
         if (
             (minorConvictions < 2 && yearslicense < 4 && nonPayments ===0 && atFaultClaims === 0  && majorConvictions === 0 && criminalConvictions === 0 ) 
@@ -641,7 +646,7 @@ function checkWawaRisk() {
            alert('comm');
             isHighRisk = false; 
         }
-
+    }
     } else {
         alert("Wawa does not support this license type.");
     }
