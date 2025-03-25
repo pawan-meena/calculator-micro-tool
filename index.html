@@ -562,7 +562,8 @@ function checkTravellersRisk() {
 
 
 
-    (nonPayments < 2 && atFaultClaims < 2 && minorConvictions === 0 && majorConvictions === 0 && criminalConvictions === 0) 
+    (nonPayments < 3 &&  (yearslicense >= 6 && atFaultClaims < 2) && minorConvictions === 0 && majorConvictions === 0 && criminalConvictions === 0) 
+
     
     ||   
 
@@ -578,7 +579,7 @@ function checkTravellersRisk() {
             
 
             ) {
-           
+           alert("pawan");
                 isHighRisk = false;
             }
         } else {
