@@ -608,7 +608,7 @@ function checkWawaRisk() {
         if (yearslicense >= 3 && yearslicense <= 99) {
             if (
     nonPayments <= 1 &&
-    (atFaultClaims === 0 || (atFaultClaims > 0 && years >= 5)) &&
+    (atFaultClaims === 0 || (atFaultClaims === 1 && years >= 5)) &&
     criminalConvictions === 0 &&
     majorConvictions === 0 &&
     minorConvictions <= 2
