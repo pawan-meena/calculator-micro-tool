@@ -664,7 +664,7 @@ function checkWawaRisk() {
 
 
     function checkUnicaRisk() {
-
+        let isHighRisk = true;
         const { licenseType, yearslicense, nonPayments, atFaultClaims, minorConvictions, majorConvictions, criminalConvictions } = getConvictions();
 
 
