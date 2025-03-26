@@ -360,8 +360,8 @@ document.addEventListener('DOMContentLoaded', function() {
             //   const ecoHighRisk = checkEcoRisk();
             // const sgiHighRisk = checkSgiRisk();
             // const travellersHighRisk = checkTravellersRisk();
-            const wawaHighRisk = checkWawaRisk();
-
+            // const wawaHighRisk = checkWawaRisk();
+            const unicaHighRisk = checkUnicaRisk();
             //   const uniqaHighRisk = checkRiskUNIQA();
             //   const wawaHighRisk = checkRiskWAWA();
                           
@@ -369,7 +369,8 @@ document.addEventListener('DOMContentLoaded', function() {
             // const isHighRisk = avivaHighRisk;
             // const isHighRisk = ecoHighRisk;
             // const isHighRisk = sgiHighRisk;
-            const isHighRisk = wawaHighRisk;
+            // const isHighRisk = wawaHighRisk;
+            const isHighRisk = unicaHighRisk;
               console.log({
                 //  AVIVA: avivaHighRisk,
                 // ECO  :ecoHighRisk,
@@ -613,7 +614,7 @@ function checkWawaRisk() {
 
 
     nonPayments <= 1 &&
-    (atFaultClaims === 0 || (atFaultClaims === 1 && years >= 5)) &&
+    (atFaultClaims === 0 || (atFaultClaims === 1 && yearslicense >= 5)) &&
     criminalConvictions === 0 &&
     majorConvictions === 0 &&
     minorConvictions <= 2
@@ -654,7 +655,7 @@ function checkWawaRisk() {
     return isHighRisk;
 }
 }
-// ==============================checkWawaRisk =============================
+// ==============================checkUnicaRisk =============================
 
 
 
@@ -662,40 +663,60 @@ function checkWawaRisk() {
 
 
 
-    function checkRiskUNIQA() {
-        const { licenseType, nonPayments, atFaultClaims, minorConvictions, majorConvictions, criminalConvictions } = getConvictions();
+    function checkUnicaRisk() {
+
+        const { licenseType, yearslicense, nonPayments, atFaultClaims, minorConvictions, majorConvictions, criminalConvictions } = getConvictions();
+
+
+        if (licenseType === "g") {
+        if (yearslicense >= 3 && yearslicense <= 99) {
+
+            if ([nonPayments, atFaultClaims, criminalConvictions, majorConvictions, minorConvictions].filter(v => v > 0).length < 2) {
+
+            if (
+
+
+    nonPayments <= 1 &&
+    (atFaultClaims === 0 || (atFaultClaims === 1 && yearslicense >= 6)) &&
+    criminalConvictions === 0 &&
+    majorConvictions === 0 &&
+    minorConvictions <= 2
+) {
+    isHighRisk = false;
+}
+            } else{
+    
+        if (
+            (minorConvictions < 3   && nonPayments ===0 &&  (atFaultClaims === 0 && yearslicense >= 6)  && majorConvictions === 0 && criminalConvictions === 0 ) 
+            
+            ||  
+            (nonPayments < 2  && minorConvictions < 2  && (atFaultClaims === 0 && yearslicense >= 6)  && majorConvictions === 0 && criminalConvictions === 0 )  ||   
+            (
+                nonPayments < 2 && (atFaultClaims === 0 && yearslicense >= 6)
+                  && minorConvictions === 0   && majorConvictions === 0 && criminalConvictions === 0
+
+
+            ) ||      
+            (nonPayments === 0  && minorConvictions < 2  &&  (atFaultClaims === 0 || (atFaultClaims === 0 && yearslicense >= 6))   && majorConvictions === 0 && criminalConvictions === 0 ) ||  
+            
+            (
+                
+            nonPayments <2  && minorConvictions ===0   &&  (atFaultClaims === 0 && yearslicense >= 6)    && majorConvictions === 0 && criminalConvictions === 0 
         
-        let isHighRisk = false;
-        
-        if ((licenseType === "g" || licenseType === "g1-g2") && (atFaultClaims >= 2)) {
-            isHighRisk = true;
+        ) || 
+            (  nonPayments <2  && minorConvictions === 0  &&   atFaultClaims === 0   && majorConvictions === 0 && criminalConvictions === 0 )  
+        ) {
+
+       
+            isHighRisk = false; 
         }
-        if ((licenseType === "g" || licenseType === "g1-g2") && (atFaultClaims >= 1 && minorConvictions >= 3)) {
-            isHighRisk = true;
-        }
-        if ((licenseType === "g" || licenseType === "g1-g2") && (atFaultClaims >= 2 && minorConvictions >= 2)) {
-            isHighRisk = true;
-        }
-        if ((licenseType === "g" || licenseType === "g1-g2") && majorConvictions >= 1) {
-            isHighRisk = true;
-        }
-        if ((licenseType === "g" || licenseType === "g1-g2") && criminalConvictions >= 1) {
-            isHighRisk = true;
-        }
-        if ((licenseType === "g" || licenseType === "g1-g2") && minorConvictions >= 3) {
-            isHighRisk = true;
-        }
-        if ((licenseType === "g" || licenseType === "g1-g2") && nonPayments >= 2) {
-            isHighRisk = true;
-        }
-        if ((licenseType === "g" || licenseType === "g1-g2") && atFaultClaims >= 1 && nonPayments >= 1) {
-            isHighRisk = true;
-        }
-        if ((licenseType === "g" || licenseType === "g1-g2") && nonPayments >= 1 && minorConvictions >= 1) {
-            isHighRisk = true;
-        }
-        
-        return isHighRisk;
+    }
+    } else {
+        alert("Wawa does not support this license type.");
+    }
+
+    return isHighRisk;
+}
     }
 </script>
 <script>
