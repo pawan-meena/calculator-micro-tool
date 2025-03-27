@@ -277,7 +277,7 @@ function addConvictionRow() {
                             <span class="material-icons text-gray-600 text-2xl">payment</span>
                             <span class="pt-0 pl-2">Number of non-payments in 3 years </span>
                         </label>
-                        <input type="number" class="w-full p-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-600 mt-1" min="0"  required>
+                        <input type="number" class="w-full p-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-600 mt-1" min="0"  >
                     </div>
                 </div>
   
@@ -288,7 +288,7 @@ function addConvictionRow() {
                                 <span class="material-icons text-gray-600 text-2xl">report_problem</span>
                             <span class="pt-0 pl-2">Number of At-Fault claims in 3 years </span>
                         </label>
-                        <input type="number" class="w-full p-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-600 mt-1" min="0"  required>
+                        <input type="number" class="w-full p-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-600 mt-1" min="0"  >
                     </div>
                 </div>
                 
@@ -353,36 +353,25 @@ document.addEventListener('DOMContentLoaded', function() {
             } else if (isNaN(yearsLicense) || yearsLicense < 0 || yearsLicense >= 99) {
                 showError(inputs[0], "Years licensed must be between 0 and 99.");
             }
-            if (nonPayments === "") showError(inputs[1], "Please enter the number of non-payments. e.g : 0,1,2,3...");
-            if (atFaultClaims === "") showError(inputs[2], "Please enter the number of at-fault claims. e.g : 0,1,2,3...");
+          
             if (hasError) return;
-             //   const avivaHighRisk = checkAvivaRisk();
+            alert('aviva');
+                const avivaHighRisk = checkAvivaRisk();
             //   const ecoHighRisk = checkEcoRisk();
             // const sgiHighRisk = checkSgiRisk();
             // const travellersHighRisk = checkTravellersRisk();
             // const wawaHighRisk = checkWawaRisk();
             // const unicaHighRisk = checkUnicaRisk();
-            const intHighRisk = checkIntRisk();
-            //   const uniqaHighRisk = checkRiskUNIQA();
-            //   const wawaHighRisk = checkRiskWAWA();
+          //  const intHighRisk = checkIntRisk();
+          
                           
-            //   const isHighRisk = avivaHighRisk && uniqaHighRisk && wawaHighRisk;
+              const isHighRisk = avivaHighRisk && uniqaHighRisk && wawaHighRisk;
             // const isHighRisk = avivaHighRisk;
             // const isHighRisk = ecoHighRisk;
             // const isHighRisk = sgiHighRisk;
             // const isHighRisk = wawaHighRisk;
-            const isHighRisk = intHighRisk;
-              console.log({
-                //  AVIVA: avivaHighRisk,
-                // ECO  :ecoHighRisk,
-                // SGI  : sgiHighRisk,
-                //   AVIVA: avivaHighRisk,
-                //   ECO  : ecoHighRisk,
-                //   SGI  : sgiHighRisk,
-                //   // AVIVA: avivaHighRisk,
-                //   UNIQA: uniqaHighRisk,
-                //   WAWA: wawaHighRisk,
-          });      
+            //const isHighRisk = intHighRisk;
+              
               displayResult(isHighRisk);
           });
       }
