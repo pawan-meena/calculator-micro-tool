@@ -361,7 +361,8 @@ document.addEventListener('DOMContentLoaded', function() {
             // const sgiHighRisk = checkSgiRisk();
             // const travellersHighRisk = checkTravellersRisk();
             // const wawaHighRisk = checkWawaRisk();
-            const unicaHighRisk = checkUnicaRisk();
+            // const unicaHighRisk = checkUnicaRisk();
+            const intHighRisk = checkIntRisk();
             //   const uniqaHighRisk = checkRiskUNIQA();
             //   const wawaHighRisk = checkRiskWAWA();
                           
@@ -370,7 +371,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // const isHighRisk = ecoHighRisk;
             // const isHighRisk = sgiHighRisk;
             // const isHighRisk = wawaHighRisk;
-            const isHighRisk = unicaHighRisk;
+            const isHighRisk = intHighRisk;
               console.log({
                 //  AVIVA: avivaHighRisk,
                 // ECO  :ecoHighRisk,
@@ -718,6 +719,106 @@ function checkWawaRisk() {
     return isHighRisk;
 }
     }
+
+// ==============================checkIntRisk =============================
+
+
+
+    function checkIntRisk() {
+        let isHighRisk = true;
+        const { licenseType, yearslicense, nonPayments, atFaultClaims, minorConvictions, majorConvictions, criminalConvictions } = getConvictions();
+        if (licenseType === "g") {
+        if (yearslicense >= 3 && yearslicense <= 99) {
+
+            if ([nonPayments, atFaultClaims, criminalConvictions, majorConvictions, minorConvictions].filter(v => v > 0).length < 2) {
+
+            if (
+    nonPayments <= 2 && yearslicense >= 5 &&
+    atFaultClaims <1 &&
+    criminalConvictions === 0 &&
+    majorConvictions === 0 &&
+    minorConvictions <= 3
+) {
+    isHighRisk = false;
+}
+
+if (
+    nonPayments < 2 && yearslicense < 5 &&
+    atFaultClaims ===0 &&
+    criminalConvictions === 0 &&
+    majorConvictions === 0 &&
+    minorConvictions <= 2
+) {
+    isHighRisk = false;
+}
+
+
+
+            } else{
+
+                if (
+   (nonPayments ===0 && yearslicense >= 5 &&
+    atFaultClaims <2  &&
+    criminalConvictions === 0 &&
+    majorConvictions === 0 &&
+    minorConvictions <2)
+    ||  
+   ( nonPayments < 2 && yearslicense >= 5 &&
+    atFaultClaims ===0  &&
+    criminalConvictions === 0 &&
+    majorConvictions === 0 &&
+    minorConvictions <2
+    )
+    ||  
+   ( nonPayments === 2 && yearslicense >= 5 &&
+    atFaultClaims ===0  &&
+    criminalConvictions === 0 &&
+    majorConvictions === 0 &&
+    minorConvictions <3
+    )
+    ||  
+   ( nonPayments === 0 && yearslicense >= 5 &&
+    atFaultClaims <2  &&
+    criminalConvictions === 0 &&
+    majorConvictions === 0 &&
+    minorConvictions ===0
+    )
+
+) {
+    isHighRisk = false;
+}
+
+if (
+   (nonPayments ===0 && yearslicense < 5 &&
+    atFaultClaims ===0  &&
+    criminalConvictions === 0 &&
+    majorConvictions === 0 &&
+    minorConvictions <2)
+   
+
+) {
+    isHighRisk = false;
+}
+
+    
+    }
+    } else {
+        alert("Wawa does not support this license type.");
+    }
+
+    return isHighRisk;
+}
+    
+
+
+
+
+    }
+
+
+
+
+
 </script>
 <script>
     // WAWA
