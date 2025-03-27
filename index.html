@@ -530,8 +530,8 @@ function checkSgiRisk() {
             isHighRisk = true;
         }
     } else {
-        alert("SGI does not support this license type.");
-        isHighRisk = true;
+      
+        isHighRisk = null;
     }
 
     return isHighRisk;
@@ -654,6 +654,9 @@ function checkWawaRisk() {
     }
 
     return isHighRisk;
+}else{
+    return null;
+
 }
 }
 // ==============================checkUnicaRisk =============================
@@ -713,10 +716,14 @@ function checkWawaRisk() {
         }
     }
     } else {
-        alert("Wawa does not support this license type.");
+        alert("unica does not support this license type.");
     }
 
     return isHighRisk;
+}else{
+    return null;
+
+
 }
     }
 
@@ -803,11 +810,14 @@ if (
     
     }
     } else {
-        alert("Wawa does not support this license type.");
+        alert("int does not support this license type.");
     }
 
     return isHighRisk;
-}
+}else {
+        alert("Int does not support this license type.");
+        return null;
+    }
     
 
 
