@@ -362,7 +362,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // const travellersHighRisk = checkTravellersRisk();
             // const wawaHighRisk = checkWawaRisk();
             // const unicaHighRisk = checkUnicaRisk();
-          //  const intHighRisk = checkIntRisk();
+           //  const intHighRisk = checkIntRisk();
           
                           
               const isHighRisk = avivaHighRisk && uniqaHighRisk && wawaHighRisk;
@@ -432,27 +432,56 @@ document.addEventListener('DOMContentLoaded', function() {
   function checkAvivaRisk() {
     const { licenseType, yearslicense, nonPayments, atFaultClaims, minorConvictions, majorConvictions, criminalConvictions } = getConvictions();
 
-    let isHighRisk = false;
+    let isHighRisk = true;
 
     if (licenseType === "g") {
-        if (!(yearslicense >= 3 && yearslicense <= 99 &&
+        if ((yearslicense >= 3 && yearslicense <= 99 &&
               atFaultClaims === 0 &&
               criminalConvictions === 0 &&
               majorConvictions === 0 &&
               minorConvictions <= 2 &&
-              nonPayments === 0)) {
-            isHighRisk = true;
+              nonPayments <= 2)) {
+            isHighRisk = false;
         }
     } else if (licenseType === "g1-g2") {
-        if (!(yearslicense >= 5 && yearslicense <= 99 &&
+        if ((
               atFaultClaims === 0 &&
               criminalConvictions === 0 &&
               majorConvictions === 0 &&
-              minorConvictions <= 2 &&
+              minorConvictions  === 0 &&
               nonPayments === 0)) {
-            isHighRisk = true;
+            isHighRisk = false;
         }
     }
+
+
+
+
+    if (
+                (nonPayments === 0 && minorConvictions < 3  && majorConvictions === 0 &&  atFaultClaims === 0 &&  criminalConvictions === 0 ) 
+
+    || 
+
+
+
+    (nonPayments < 2 &&  atFaultClaims === 0 && minorConvictions === 0 && majorConvictions === 0 && criminalConvictions === 0) 
+
+    
+    ||   
+
+
+    (nonPayments < 2 && (yearslicense >= 6 && atFaultClaims < 2)  && majorConvictions === 0 && criminalConvictions === 0   && minorConvictions === 0 )
+    
+    
+    ||  
+
+
+    (nonPayments === 0  && (yearslicense >= 6 && atFaultClaims < 2)  && majorConvictions === 0 && criminalConvictions === 0   && minorConvictions < 2 )
+
+            ) {
+                isHighRisk = false;
+            }
+
 
     return isHighRisk;
 }
@@ -575,7 +604,7 @@ function checkTravellersRisk() {
 (nonPayments === 0 && minorConvictions ===0  && majorConvictions <2 && criminalConvictions === 0 &&  atFaultClaims === 0  )  
 
             ) {
-           alert("pawan");
+          
                 isHighRisk = false;
             }
         } else {
