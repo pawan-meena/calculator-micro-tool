@@ -365,8 +365,8 @@ document.addEventListener('DOMContentLoaded', function() {
            //  const intHighRisk = checkIntRisk();
           
                           
-              const isHighRisk = avivaHighRisk && uniqaHighRisk && wawaHighRisk;
-            // const isHighRisk = avivaHighRisk;
+            //   const isHighRisk = avivaHighRisk && uniqaHighRisk && wawaHighRisk;
+            const isHighRisk = avivaHighRisk;
             // const isHighRisk = ecoHighRisk;
             // const isHighRisk = sgiHighRisk;
             // const isHighRisk = wawaHighRisk;
@@ -434,9 +434,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let isHighRisk = true;
 
+    if ([nonPayments, atFaultClaims, criminalConvictions, majorConvictions, minorConvictions].filter(v => v > 0).length < 2) {
     if (licenseType === "g") {
         if ((yearslicense >= 3 && yearslicense <= 99 &&
-              atFaultClaims === 0 &&
+              atFaultClaims === 0 && yearslicense >= 6 &&
               criminalConvictions === 0 &&
               majorConvictions === 0 &&
               minorConvictions <= 2 &&
@@ -454,7 +455,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-
+    }else{
 
 
     if (
@@ -481,7 +482,7 @@ document.addEventListener('DOMContentLoaded', function() {
             ) {
                 isHighRisk = false;
             }
-
+  }
 
     return isHighRisk;
 }
