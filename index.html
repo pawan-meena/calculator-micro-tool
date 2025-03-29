@@ -437,7 +437,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if ([nonPayments, atFaultClaims, criminalConvictions, majorConvictions, minorConvictions].filter(v => v > 0).length < 2) {
     if (licenseType === "g") {
         if ((yearslicense >= 3 && yearslicense <= 99 &&
-              atFaultClaims === 0 && yearslicense >= 6 &&
+              atFaultClaims === 0  &&
               criminalConvictions === 0 &&
               majorConvictions === 0 &&
               minorConvictions <= 2 &&
