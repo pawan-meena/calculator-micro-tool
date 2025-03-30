@@ -434,8 +434,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let isHighRisk = true;
 
-    if ([nonPayments, atFaultClaims, criminalConvictions, majorConvictions, minorConvictions].filter(v => v > 0).length < 2) {
+   
     if (licenseType === "g") {
+        if ([nonPayments, atFaultClaims, criminalConvictions, majorConvictions, minorConvictions].filter(v => v > 0).length < 2) {
         if ((yearslicense >= 3 && yearslicense <= 99 &&
               atFaultClaims === 0  &&
               criminalConvictions === 0 &&
@@ -444,19 +445,7 @@ document.addEventListener('DOMContentLoaded', function() {
               nonPayments <= 2)) {
             isHighRisk = false;
         }
-    } else if (licenseType === "g1-g2") {
-        if ((
-              atFaultClaims === 0 &&
-              criminalConvictions === 0 &&
-              majorConvictions === 0 &&
-              minorConvictions  === 0 &&
-              nonPayments === 0)) {
-            isHighRisk = false;
-        }
-    }
-
-    }else{
-
+    } else {
 
     if (
                 (nonPayments === 0 && minorConvictions < 3  && majorConvictions === 0 &&  atFaultClaims === 0 &&  criminalConvictions === 0 ) 
@@ -482,7 +471,23 @@ document.addEventListener('DOMContentLoaded', function() {
             ) {
                 isHighRisk = false;
             }
-  }
+
+        }
+    } else if (licenseType === "g1-g2") {
+        if (( yearslicense >= 3 && yearslicense <= 99 &&
+              atFaultClaims === 0 &&
+              criminalConvictions === 0 &&
+              majorConvictions === 0 &&
+              minorConvictions  === 0 &&
+              nonPayments === 0)) {
+            isHighRisk = false;
+        }else{
+            alert("wrong for g1/g2");
+            return pawan;
+        }
+    }
+
+  
 
     return isHighRisk;
 }
