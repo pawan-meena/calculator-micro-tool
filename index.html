@@ -474,7 +474,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         }
     } else if (licenseType === "g1-g2") {
-        if (( yearslicense >= 3 && yearslicense <= 99 &&
+        if (( yearslicense <= 5  &&
               atFaultClaims === 0 &&
               criminalConvictions === 0 &&
               majorConvictions === 0 &&
@@ -482,7 +482,7 @@ document.addEventListener('DOMContentLoaded', function() {
               nonPayments === 0)) {
             isHighRisk = false;
         }else{
-            alert("wrong for g1/g2");
+            alert("wrong  g1/g2 not support these values");
             return pawan;
         }
     }
