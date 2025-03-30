@@ -529,7 +529,7 @@ function checkEcoRisk() {
 // ==============================checkSgiRisk =============================
 function checkSgiRisk() {
     let { licenseType, yearslicense, nonPayments, atFaultClaims, minorConvictions, majorConvictions, criminalConvictions } = getConvictions();
-    let isHighRisk = true;
+    let isHighRisk = false;
     let minYearsRequired = atFaultClaims > 0 ? 6 : 3;
     
     if (yearslicense < minYearsRequired) {
@@ -537,19 +537,19 @@ function checkSgiRisk() {
     }
 
     if (licenseType === "g") {
-        if ((nonPayments <= 3 &&
+        if (!(nonPayments <= 3 &&
               atFaultClaims <= 2 &&
               criminalConvictions <= 1 &&
               majorConvictions <= 1 &&
               minorConvictions <= 5)) {
-            isHighRisk = false;
+            isHighRisk = true;
         }
     } else if (licenseType === "g1-g2") {
-        if ((nonPayments <= 1 &&
+        if (!(nonPayments <= 1 &&
               atFaultClaims <= 1 &&
               criminalConvictions <= 1 &&
               majorConvictions <= 1)) {
-            isHighRisk = false;
+            isHighRisk = true;
         }
     } else {
       
