@@ -537,18 +537,19 @@ function checkSgiRisk() {
     }
 
     if (licenseType === "g") {
-        if ((nonPayments <= 3 &&
-              atFaultClaims <= 2 &&
-              criminalConvictions <= 1 &&
-              majorConvictions <= 1 &&
-              minorConvictions <= 5)) {
+        if ((nonPayments <= 2 &&
+              atFaultClaims <= 1 &&
+              criminalConvictions === 0 &&
+              majorConvictions === 0 &&
+              minorConvictions <= 4)) {
             isHighRisk = false;
         }
     } else if (licenseType === "g1-g2") {
-        if ((nonPayments <= 1 &&
-              atFaultClaims <= 1 &&
-              criminalConvictions <= 1 &&
-              majorConvictions <= 1)) {
+        if ((nonPayments <= 2 &&
+              atFaultClaims === 0 &&
+              criminalConvictions === 0 &&
+              minorConvictions <= 2 &&
+              majorConvictions === 0)) {
             isHighRisk = false;
         }
     } else {
