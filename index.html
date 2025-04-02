@@ -584,7 +584,10 @@ function checkTravellersRisk() {
     let isHighRisk = true;
 
     if (licenseType === "g") {
+
         if (yearslicense >= 3 && yearslicense <= 99) {
+            if ([nonPayments, atFaultClaims, criminalConvictions, majorConvictions, minorConvictions].filter(v => v > 0).length < 2) {
+
             if ((nonPayments <= 2 &&
                   atFaultClaims <= 2 &&
                   criminalConvictions === 0 &&
@@ -592,7 +595,10 @@ function checkTravellersRisk() {
                   minorConvictions <= 2)) {
                 isHighRisk = false;
             }
+        }
 
+
+            
             if (
                 (nonPayments < 2 && minorConvictions < 2  && majorConvictions === 0 &&  atFaultClaims === 0 &&  criminalConvictions === 0 ) 
     
