@@ -736,7 +736,7 @@ function checkWawaRisk() {
             (minorConvictions < 3   && nonPayments ===0 &&  (atFaultClaims === 0 && yearslicense >= 6)  && majorConvictions === 0 && criminalConvictions === 0 ) 
             
             ||  
-            (nonPayments < 2  && minorConvictions < 2  &&  yearslicense >= 6 && majorConvictions === 0 && criminalConvictions === 0 )  ||   
+            (nonPayments === 0  && minorConvictions < 2  &&  yearslicense >= 6 && majorConvictions === 0 && criminalConvictions === 0 )  ||   
             (
                 nonPayments < 2 && (atFaultClaims === 0 && yearslicense >= 6)
                   && minorConvictions === 0   && majorConvictions === 0 && criminalConvictions === 0
@@ -753,7 +753,7 @@ function checkWawaRisk() {
             (  nonPayments <2  && minorConvictions === 0  &&   atFaultClaims === 0   && majorConvictions === 0 && criminalConvictions === 0 )  
         ) {
 
-       
+      alert('comm');
             isHighRisk = false; 
         }
     }
