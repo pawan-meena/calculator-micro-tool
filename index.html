@@ -733,7 +733,7 @@ function checkWawaRisk() {
             } else{
     
         if (
-            (minorConvictions < 3   && nonPayments ===0 &&  (atFaultClaims === 0 && yearslicense >= 6)  && majorConvictions === 0 && criminalConvictions === 0 ) 
+            (minorConvictions < 3   && nonPayments < 2 &&  (atFaultClaims === 0 && yearslicense >= 6)  && majorConvictions === 0 && criminalConvictions === 0 ) 
             
             ||  
             (nonPayments === 0  && minorConvictions < 2  &&  yearslicense >= 6 && majorConvictions === 0 && criminalConvictions === 0 )  ||   
