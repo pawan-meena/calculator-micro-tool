@@ -265,7 +265,7 @@ function addConvictionRow() {
                                 <span class="material-icons text-gray-600 text-2xl">calendar_today</span>
                                 <span class="pt-0 pl-2">Years Licensed</span>
                             </label>
-                            <input type="number" class="w-full p-1 border rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-600 mt-1" min="0"  required>
+                            <input id="gtype" type="number" class="w-full p-1 border rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-600 mt-1" min="0"  required>
                         </div>
                     </div>
                 </div>
@@ -326,6 +326,14 @@ function addConvictionRow() {
 
 
 <script> 
+    document.getElementById("lt").addEventListener("change", function() {
+        let gtypeInput = document.getElementById("gtype");
+        if (this.value === "g1-g2") {
+            gtypeInput.max = 6;
+        } else {
+            gtypeInput.removeAttribute("max"); 
+        }
+    });
 document.addEventListener('DOMContentLoaded', function() {
       const submitButton = document.querySelector('button[type="submit"]');
       if (submitButton) {
@@ -577,12 +585,12 @@ function checkTravellersRisk() {
 
     if (licenseType === "g") {
         if (yearslicense >= 3 && yearslicense <= 99) {
-            if (!(nonPayments <= 2 &&
+            if ((nonPayments <= 2 &&
                   atFaultClaims <= 2 &&
                   criminalConvictions === 0 &&
                   majorConvictions === 0 &&
-                  minorConvictions <= 3)) {
-                isHighRisk = true;
+                  minorConvictions <= 2)) {
+                isHighRisk = false;
             }
 
             if (
@@ -618,7 +626,7 @@ function checkTravellersRisk() {
                 isHighRisk = false;
             }
         } else {
-            isHighRisk = true;
+           
         }
     } else {
         alert("Travellers does not support this license type.");
