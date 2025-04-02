@@ -545,7 +545,7 @@ function checkSgiRisk() {
             isHighRisk = false;
         }
     } else if (licenseType === "g1-g2") {
-        if ((nonPayments <= 2 &&
+        if ((nonPayments <= 2 && yearslicense <= 6 &&
               atFaultClaims === 0 &&
               criminalConvictions === 0 &&
               minorConvictions <= 2 &&
