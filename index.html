@@ -518,6 +518,7 @@ function checkEcoRisk() {
             }
         } else {
             isHighRisk = true; 
+        
         }
     } else {
        
@@ -551,10 +552,15 @@ function checkSgiRisk() {
               minorConvictions <= 2 &&
               majorConvictions === 0)) {
             isHighRisk = false;
-        }
+        } else {
+      
+      return pawa;
+   
+      }
     } else {
       
     return pawa;
+  
     }
 
     return isHighRisk;
