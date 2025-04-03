@@ -363,9 +363,9 @@ document.addEventListener('DOMContentLoaded', function() {
             }
           
             if (hasError) return;
-            alert('aviva');
-             const avivaHighRisk = checkAvivaRisk();
-              // const ecoHighRisk = checkEcoRisk();
+            alert('eco');
+            //  const avivaHighRisk = checkAvivaRisk();
+           const ecoHighRisk = checkEcoRisk();
             // const sgiHighRisk = checkSgiRisk();
            //  const travellersHighRisk = checkTravellersRisk();
            // const wawaHighRisk = checkWawaRisk();
@@ -374,8 +374,8 @@ document.addEventListener('DOMContentLoaded', function() {
           
                           
        
-            const isHighRisk = avivaHighRisk;
-            //const isHighRisk = ecoHighRisk;
+            // const isHighRisk = avivaHighRisk;
+           const isHighRisk = ecoHighRisk;
             // const isHighRisk = sgiHighRisk;
            //  const isHighRisk = travellersHighRisk;
            // const isHighRisk = wawaHighRisk;
@@ -492,7 +492,7 @@ document.addEventListener('DOMContentLoaded', function() {
               nonPayments === 0)) {
             isHighRisk = false;
         }else{
-            isHighRisk == pawa;
+            
         }
     }
 
@@ -531,7 +531,7 @@ function checkEcoRisk() {
         
         }
     } else {
-       
+        isHighRisk = pawan;
     }
 
     return isHighRisk;
