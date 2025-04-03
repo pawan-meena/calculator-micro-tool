@@ -758,7 +758,7 @@ function checkWawaRisk() {
         }
     }
     } else {
-        alert("unica does not support this license type.");
+       
     }
 
     return isHighRisk;
@@ -819,7 +819,7 @@ if (
     minorConvictions <2
     )
     ||  
-   ( nonPayments === 2 && yearslicense >= 5 &&
+   ( nonPayments < 2 && yearslicense >= 5 &&
     atFaultClaims ===0  &&
     criminalConvictions === 0 &&
     majorConvictions === 0 &&
