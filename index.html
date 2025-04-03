@@ -511,19 +511,19 @@ function checkEcoRisk() {
 
     if (licenseType === "g") {
         if (yearslicense >= 5 && yearslicense <= 99) {
-            if ((nonPayments <= 1 &&
-                  atFaultClaims <= 1 &&
-                  criminalConvictions <= 1 &&
-                  majorConvictions <= 1 &&
-                  minorConvictions <= 2)) {
+            if ((nonPayments < 1 &&
+                  atFaultClaims < 1 &&
+                  criminalConvictions < 1 &&
+                  majorConvictions < 1 &&
+                  minorConvictions <= 1 )) {
                 isHighRisk = false;
             }
         } else if (yearslicense >= 1 && yearslicense < 5) {
-            if ((nonPayments <= 1 &&
+            if ((nonPayments === 0 &&
                   atFaultClaims === 0 &&
                   criminalConvictions === 0 &&
                   majorConvictions === 0 &&
-                  minorConvictions <= 2)) {
+                  minorConvictions <= 1)) {
                 isHighRisk = false;
             }
         } else {
