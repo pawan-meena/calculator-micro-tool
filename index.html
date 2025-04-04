@@ -713,13 +713,6 @@ function checkWawaRisk() {
 }
 }
 // ==============================checkUnicaRisk =============================
-
-
-
-
-
-
-
     function checkUnicaRisk() {
         let isHighRisk = true;
         const { licenseType, yearslicense, nonPayments, atFaultClaims, minorConvictions, majorConvictions, criminalConvictions } = getConvictions();
@@ -774,7 +767,7 @@ function checkWawaRisk() {
 
     return isHighRisk;
 }else{
-    return null;
+    
 
 
 }
